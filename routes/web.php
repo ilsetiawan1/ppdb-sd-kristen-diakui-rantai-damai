@@ -33,7 +33,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/beranda/pendaftaran', [CasisController::class, 'form'])->name('formcasis');
         Route::get('/beranda/pendaftaran/isi', [CasisController::class, 'daftar'])->name('daftarcasis');
         Route::post('/beranda/pendaftaran/proses', [CasisController::class, 'proses'])->name('prosescasis');
-        Route::get('/beranda/informasi pembayaran', [PembayaranController::class, 'infobayar'])->name('informasipembayaran');
+
         Route::get('/beranda/pembayaran', [PembayaranController::class, 'pembayaran'])->name('pembayaran');
         Route::post('/pelunasan', [PembayaranController::class, 'pelunasan'])->name('pelunasan');
         Route::get('/beranda/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman');
