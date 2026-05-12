@@ -82,7 +82,7 @@
                 </div>
                 <h3 class="font-bold text-slate-800">Rincian Tagihan</h3>
             </div>
-            <div class="p-6 flex-grow">
+            <div class="p-6 grow">
                 <dl class="space-y-4">
                     <div class="flex flex-col sm:flex-row sm:items-center py-2 border-b border-slate-50">
                         <dt class="sm:w-2/5 text-sm font-medium text-slate-500">Tujuan Transfer</dt>

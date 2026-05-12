@@ -59,7 +59,7 @@ class PembayaranController extends Controller
             $data->save();
         }
 
-        return redirect('/data pembayaran')->with('success', 'Status pembayaran berhasil diperbarui.');
+        return redirect('/admin/pembayaran')->with('success', 'Status pembayaran berhasil diperbarui.');
     }
 
     public function pembayaran()
