@@ -129,7 +129,7 @@ class PembayaranController extends Controller
             ]);
 
             // Redirect dengan pesan sukses
-            return redirect()->route('informasipembayaran')->with('success', 'Bukti pembayaran berhasil diunggah. Mohon tunggu konfirmasi dari admin.');
+            return redirect()->route('pembayaran')->with('success', 'Bukti pembayaran berhasil diunggah. Mohon tunggu konfirmasi dari admin.');
         } catch (\Exception $e) {
             // Tangani error jika terjadi
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan pembayaran. Silakan coba lagi.');
