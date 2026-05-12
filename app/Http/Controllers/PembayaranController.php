@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Log;
 use App\Models\casis;
+use App\Models\tahunajar;
 use App\Models\pembayaran;
+use App\Models\pendaftaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -19,13 +21,28 @@ class PembayaranController extends Controller
 
     public function infobayar()
     {
-        // Get the currently logged-in user
         $user = Auth::user();
-
-        // Load the related casis and pembayaran data
         $user->load(['casis', 'casis.pembayaran']);
 
-        return view('pembayaran.infobayar', compact('user'));
+        $tahunAjarBerlangsung = tahunajar::where('status', 'Berlangsung')->first();
+        $kuotaTersedia = false;
+        $pesanKuota = '';
+
+        if ($tahunAjarBerlangsung) {
+            $jumlahPendaftar = pendaftaran::where('ajar_id', $tahunAjarBerlangsung->id_ajar)->count();
+
+            if ($jumlahPendaftar < $tahunAjarBerlangsung->kuota) {
+                $kuotaTersedia = true;
+                $sisaKuota = $tahunAjarBerlangsung->kuota - $jumlahPendaftar;
+                $pesanKuota = "Kuota tersisa: {$sisaKuota} dari {$tahunAjarBerlangsung->kuota}";
+            } else {
+                $pesanKuota = "Mohon maaf, kuota pendaftaran untuk tahun ajaran {$tahunAjarBerlangsung->tahun_ajar} sudah penuh.";
+            }
+        } else {
+            $pesanKuota = "Tidak ada tahun ajaran yang sedang berlangsung saat ini.";
+        }
+
+        return view('pembayaran.infobayar', compact('user', 'kuotaTersedia', 'pesanKuota'));
     }
 
     public function tagihan(Request $request, $id)

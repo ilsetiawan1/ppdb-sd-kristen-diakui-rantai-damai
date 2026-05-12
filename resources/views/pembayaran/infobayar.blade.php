@@ -3,12 +3,7 @@
 @section('content')
 <div class="content-wrapper">
     <div class="container-fluid py-4">
-        @if (session('success') || session('error'))
-        <div class="alert alert-{{ session('success') ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
-            <strong>{{ session('success') ? 'Sukses!' : 'Error!' }}</strong> {{ session('success') ?? session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        @endif
+        @include('layout.alert')
 
         <div class="card shadow">
             <div class="card">
@@ -20,6 +15,14 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    @if(!$kuotaTersedia)
+                    <div class="alert alert-warning" role="alert">
+                        <h4 class="alert-heading"><i class="fas fa-exclamation-triangle mr-2"></i>Pendaftaran Tidak Tersedia!</h4>
+                        <p>{{ $pesanKuota }}</p>
+                        <hr>
+                        <p class="mb-0">Silakan hubungi panitia untuk informasi lebih lanjut.</p>
+                    </div>
+                    @else
                     <div class="row">
                         <div class="col-md-6">
                             <table class="table table-hover">
@@ -97,7 +100,7 @@
                                             <a href="{{ $file_path }}" target="_blank" class="btn btn-sm btn-info">
                                                 Lihat Bukti
                                             </a>
-                                            @else   
+                                            @else
                                             Belum ada bukti pembayaran
                                             @endif
                                         </td>
@@ -113,6 +116,7 @@
                         </a>
                         @endif
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@
 
 @section('content')
 
+@include('layout.alert')
 <div class="content-wrapper">
     <div class="card">
         <div class="card-body">
@@ -19,7 +20,7 @@
                         <span class="info-box-icon bg-primary"><i class="fas fa-calendar-alt"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Tahun Ajaran</span>
-                            <span class="info-box-number">{{ $tahunAjaranBerlangsung }}</span>
+                            <span class="info-box-number">{{ $tahunAjaranString }}</span>
                         </div>
                     </div>
                 </div>
@@ -58,7 +59,41 @@
                 </div>
             </div>
 
-            <div class="row">
+            <!-- Informasi Kuota -->
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info"><i class="fas fa-chart-pie"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Kuota Total</span>
+                            <span class="text-muted">Jumlah Maksimal Pendaftar</span>
+                            <span class="info-box-number">{{ $kuotaTotal }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-success"><i class="fas fa-user-plus"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Kuota Terisi</span>
+                            <span class="text-muted">Telah Lolos Daftar Ulang</span>
+                            <span class="info-box-number">{{ $kuotaTerisi }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-warning"><i class="fas fa-user-minus"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Kuota Tersisa</span>
+                            <span class="text-muted">Jumlah Pendaftar Kuota tersisa</span>
+                            <span class="info-box-number">{{ $kuotaTersisa }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">

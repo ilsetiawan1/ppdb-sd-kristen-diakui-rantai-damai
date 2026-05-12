@@ -29,14 +29,14 @@ class casisController extends Controller
             $query->where('tb_casis.nama', 'like', '%' . $search . '%');
         }
 
-        $data = $query->orderBy('tb_casis.created_at', 'desc')->get();
+        $data = $query->orderBy('tb_casis.created_at', 'desc')->paginate(10)->withQueryString();
 
         return view('casis.index', compact('data', 'search'));
     }
 
     public function detail($id)
     {
-        $casis = casis::where('id_casis', $id)->firstOrFail();
+        $casis = casis::with('pendaftaran')->where('id_casis', $id)->firstOrFail();
         return view('casis.detail', compact('casis'));
     }
 
@@ -80,16 +80,28 @@ class casisController extends Controller
 
     public function form()
     {
-        // Get the currently logged-in user
         $user = Auth::user();
-
-        // Load the related panitia data
         $user->load('casis.pendaftaran');
 
-        // $user->load('pendaftaran');
+        $tahunAjarBerlangsung = tahunajar::where('status', 'Berlangsung')->first();
+        $kuotaTersedia = false;
+        $pesanKuota = '';
 
-        // Pass the user data to the view
-        return view('casis.data', compact('user'));
+        if ($tahunAjarBerlangsung) {
+            $jumlahPendaftar = pendaftaran::where('ajar_id', $tahunAjarBerlangsung->id_ajar)->count();
+
+            if ($jumlahPendaftar < $tahunAjarBerlangsung->kuota) {
+                $kuotaTersedia = true;
+                $sisaKuota = $tahunAjarBerlangsung->kuota - $jumlahPendaftar;
+                $pesanKuota = "Kuota tersisa: {$sisaKuota} dari {$tahunAjarBerlangsung->kuota}";
+            } else {
+                $pesanKuota = "Mohon maaf, kuota pendaftaran untuk tahun ajaran {$tahunAjarBerlangsung->tahun_ajar} sudah penuh.";
+            }
+        } else {
+            $pesanKuota = "Tidak ada tahun ajaran yang sedang berlangsung saat ini.";
+        }
+
+        return view('casis.data', compact('user', 'kuotaTersedia', 'pesanKuota'));
     }
 
     public function daftar()
@@ -109,6 +121,17 @@ class casisController extends Controller
     public function proses(Request $request)
     {
         try {
+            DB::beginTransaction();
+
+            // Mendapatkan tahun ajar yang berlangsung
+            $tahunAjarBerlangsung = tahunajar::where('status', 'Berlangsung')->firstOrFail();
+
+            // Memeriksa kuota
+            $jumlahPendaftar = pendaftaran::where('ajar_id', $tahunAjarBerlangsung->id_ajar)->count();
+            if ($jumlahPendaftar >= $tahunAjarBerlangsung->kuota) {
+                throw new \Exception('Mohon maaf, kuota pendaftaran untuk tahun ajaran ini sudah penuh.');
+            }
+
             // Validasi input
             $validatedData = $request->validate([
                 'nik' => 'required|string|max:10',
@@ -129,11 +152,6 @@ class casisController extends Controller
                 'kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
                 'foto' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             ]);
-
-            DB::beginTransaction();
-
-            // Mendapatkan tahun ajar yang berlangsung
-            $tahunAjarBerlangsung = tahunajar::where('status', 'Berlangsung')->firstOrFail();
 
             // Menyimpan atau memperbarui data casis
             $casis = casis::updateOrCreate(
@@ -173,7 +191,7 @@ class casisController extends Controller
 
             DB::commit();
 
-            return redirect('/beranda/form')->with('success', 'Data Berhasil Disimpan.');
+            return redirect()->route('formcasis')->with('success', 'Data Berhasil Disimpan.');
         } catch (ValidationException $e) {
             DB::rollBack();
             return redirect()->back()
@@ -186,17 +204,11 @@ class casisController extends Controller
             return redirect()->back()
                 ->with('error', 'Tidak ada tahun ajar yang berlangsung.')
                 ->withInput();
-        } catch (QueryException $e) {
-            DB::rollBack();
-            Log::error('Database error: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('error', 'Terjadi kesalahan pada database. Silakan coba lagi nanti.')
-                ->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Unexpected error: ' . $e->getMessage());
             return redirect()->back()
-                ->with('error', 'Terjadi kesalahan yang tidak terduga. Silakan coba lagi nanti.')
+                ->with('error', $e->getMessage())
                 ->withInput();
         }
     }

@@ -22,7 +22,7 @@
                             <a href="/unduh/hasil casis" class="btn btn-warning">
                                 <i class="fas fa-print"></i> Cetak Laporan
                             </a>
-                        </div>
+                        </div
 
                         <!-- Kolom Pencarian -->
                         <div class="col-sm-6">

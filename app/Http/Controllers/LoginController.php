@@ -12,7 +12,13 @@ class LoginController extends Controller
 {
     public function registrasi(Request $request)
     {
-        // Cek apakah ada tahun ajaran dengan status Berlangsung
+        if ($request->input('captcha_failed')) {
+            // Captcha gagal, kirim pesan kesalahan ke sisi klien
+            return response()->json([
+                'message' => 'Verifikasi Captcha gagal. Silakan coba lagi.'
+            ]);
+        }
+
         $tahunAjarBerlangsung = tahunajar::where('status', 'Berlangsung')->first();
 
         if (!$tahunAjarBerlangsung) {
@@ -31,25 +37,44 @@ class LoginController extends Controller
         return redirect('/')->with('success', 'Registrasi berhasil!');
     }
 
-
     public function loginproses(Request $request)
     {
-        // Validasi input
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
             'captcha' => 'required|numeric',
-            'num1' => 'required|numeric',
-            'num2' => 'required|numeric',
         ]);
 
-        if ($validator->fails()) {
-            return redirect('/')->withErrors($validator)->withInput();
-        }
+        $validator->after(function ($validator) use ($request) {
+            $num1 = intval($request->input('num1'));
+            $num2 = intval($request->input('num2'));
+            $captcha = intval($request->input('captcha'));
 
-        // Validasi captcha
-        if ($request->captcha != ($request->num1 + $request->num2)) {
-            return redirect('/')->with('error', 'Jawaban Captcha Salah');
+            if ($captcha !== ($num1 + $num2)) {
+                $validator->errors()->add('captcha', 'Jawaban Captcha salah. Silakan coba lagi.');
+            }
+        });
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errorMessages = [];
+
+            if ($errors->has('email')) {
+                $errorMessages[] = 'Email tidak valid.';
+            }
+            if ($errors->has('password')) {
+                $errorMessages[] = 'Password harus diisi.';
+            }
+            if ($errors->has('captcha')) {
+                $errorMessages[] = $errors->first('captcha');
+            }
+
+            $errorMessage = implode(' ', $errorMessages);
+
+            return redirect('/')
+                ->withErrors($validator)
+                ->withInput($request->except('password'))
+                ->with('error', $errorMessage ?: 'Mohon isi semua field dengan benar.');
         }
 
         // Attempt login
@@ -63,21 +88,22 @@ class LoginController extends Controller
             switch ($user->role) {
                 case 'Admin':
                 case 'Kepala Sekolah':
-                    return redirect('/beranda');
+                    return redirect('/admin/dashboard')->with('success', 'Selamat datang, ' . $user->name);
                 case 'Panitia':
-                    return redirect('/beranda/panitia');
+                    return redirect('/beranda/panitia')->with('success', 'Selamat datang, ' . $user->name);
                 case 'Calon Siswa':
-                    return redirect('/beranda/casis');
+                    return redirect('/beranda/casis')->with('success', 'Selamat datang, ' . $user->name);
                 default:
                     Auth::logout();
-                    return redirect('/')->with('error', 'Role tidak valid');
+                    return redirect('/')->with('error', 'Akses ditolak. Hubungi administrator untuk informasi lebih lanjut.');
             }
         }
 
         // Login failed
-        return redirect('/')->with('error', 'Email Atau Password Salah');
+        return redirect('/')
+            ->withInput($request->except('password'))
+            ->with('error', 'Email atau password salah. Silakan coba lagi.');
     }
-
     public function logout()
     {
         Auth::logout();

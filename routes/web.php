@@ -1,17 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\CasisController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PanitiaController;
 use App\Http\Controllers\OrangtuaController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PendaftaranController;
-use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\BiayaDaftarUlangController;
+use App\Http\Controllers\PanitiaDaftarUlangController;
+use App\Http\Controllers\CalonSiswaDaftarUlangController;
 
 // Public routes
 Route::get('/', [PengaturanController::class, 'index'])->name('login');
@@ -27,14 +30,18 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:Calon Siswa'])->group(function () {
         Route::get('/beranda/casis', [BerandaController::class, 'berandacasis'])->name('berandacasis');
         Route::get('/beranda/profil casis', [ProfilController::class, 'casis'])->name('casis');
-        Route::get('/beranda/form', [CasisController::class, 'form'])->name('formcasis');
-        Route::get('/beranda/form/casis', [CasisController::class, 'daftar'])->name('daftarcasis');
-        Route::post('/beranda/form/casis/proses', [CasisController::class, 'proses'])->name('prosescasis');
+        Route::get('/beranda/pendaftaran', [CasisController::class, 'form'])->name('formcasis');
+        Route::get('/beranda/pendaftaran/isi', [CasisController::class, 'daftar'])->name('daftarcasis');
+        Route::post('/beranda/pendaftaran/proses', [CasisController::class, 'proses'])->name('prosescasis');
         Route::get('/beranda/informasi pembayaran', [PembayaranController::class, 'infobayar'])->name('informasipembayaran');
         Route::get('/beranda/pembayaran', [PembayaranController::class, 'pembayaran'])->name('pembayaran');
         Route::post('/pelunasan', [PembayaranController::class, 'pelunasan'])->name('pelunasan');
         Route::get('/beranda/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman');
         Route::get('/unduh pengumuman/{id}', [PengumumanController::class, 'unduh'])->name('unduh');
+
+        Route::get('/daftar-ulang', [CalonSiswaDaftarUlangController::class, 'show'])->name('calon_siswa.daftar_ulang.show');
+        Route::post('/daftar-ulang', [CalonSiswaDaftarUlangController::class, 'store'])->name('calon_siswa.daftar_ulang.store');
+        Route::get('/daftar-ulang/print', [CalonSiswaDaftarUlangController::class, 'print'])->name('calon_siswa.daftar_ulang.print');
     });
 
     // Panitia routes
@@ -63,11 +70,20 @@ Route::middleware(['auth'])->group(function () {
             Route::get('laporan pendaftaran', [LaporanController::class, 'unduhpendaftaran'])->name('unduhpendaftaran');
             Route::get('laporan pembayaran', [LaporanController::class, 'unduhpembayaran'])->name('unduhpembayaran');
         });
+
+        Route::prefix('panitia')->group(function () {
+            Route::get('/daftar-ulang', [PanitiaDaftarUlangController::class, 'index'])->name('panitia.daftar_ulang.index');
+            Route::get('/daftar-ulang/{id}', [PanitiaDaftarUlangController::class, 'show'])->name('panitia.daftar_ulang.show');
+            Route::put('/daftar-ulang/{id}', [PanitiaDaftarUlangController::class, 'update'])->name('panitia.daftar_ulang.update');
+        });
+        Route::get('/laporan/daftar-ulang', [PanitiaDaftarUlangController::class, 'laporanDaftarUlang'])->name('laporan.daftar-ulang.index');
+        Route::get('/laporan/daftar-ulang/cetak', [PanitiaDaftarUlangController::class, 'cetak'])->name('laporan.daftar-ulang.cetak');
     });
 
     // Admin routes
-    Route::middleware(['role:Admin'])->group(function () {
-        Route::get('/beranda/profil admin', [ProfilController::class, 'admin'])->name('admin');
+    Route::middleware(['role:Admin'])->prefix('admin')->group(function () {
+        Route::get('/dashboard', [BerandaController::class, 'index'])->name('admin.dashboard');
+        Route::get('/profil', [ProfilController::class, 'admin'])->name('admin.profil');
 
         // Casis management
         Route::prefix('data/casis')->group(function () {
@@ -90,50 +106,60 @@ Route::middleware(['auth'])->group(function () {
 
         // Other admin routes
         Route::get('/data/ortu', [OrangtuaController::class, 'index'])->name('dataortu');
-        Route::get('/data pembayaran', [PembayaranController::class, 'index'])->name('index');
-        Route::get('/pembayaran/tagihan/{id}', [PembayaranController::class, 'tagihan'])->name('tagihan');
-        Route::post('/pembayaran/proses/{id}', [PembayaranController::class, 'proses'])->name('proses');
-        Route::delete('pembayaran/delete/{id}', [PembayaranController::class, 'delete'])->name('delete');
+        
+        Route::prefix('pembayaran')->group(function () {
+            Route::get('/', [PembayaranController::class, 'index'])->name('index');
+            Route::get('/tagihan/{id}', [PembayaranController::class, 'tagihan'])->name('tagihan');
+            Route::post('/proses/{id}', [PembayaranController::class, 'proses'])->name('proses');
+            Route::delete('/delete/{id}', [PembayaranController::class, 'delete'])->name('delete');
+        });
 
         // Pendaftaran
         Route::prefix('pendaftaran')->group(function () {
             Route::get('/', [PendaftaranController::class, 'index'])->name('datapendaftaran');
             Route::get('form', [PendaftaranController::class, 'formpendaftaran'])->name('formpendaftaran');
             Route::post('proses', [PendaftaranController::class, 'proses'])->name('prosespendaftaran');
-            Route::get('tampil data/{id}', [PendaftaranController::class, 'tampil'])->name('tampildata');
-            Route::post('prosesdata/{id}', [PendaftaranController::class, 'prosesdata'])->name('prosesdata');
+            Route::get('tampil-data/{id}', [PendaftaranController::class, 'tampil'])->name('tampildata');
+            Route::post('proses-data/{id}', [PendaftaranController::class, 'prosesdata'])->name('prosesdata');
         });
 
         // Laporan
         Route::prefix('laporan')->group(function () {
-            Route::get('pendaftaran', [LaporanController::class, 'pendaftaran'])->name('pendaftaran');
-            Route::get('pembayaran', [LaporanController::class, 'pembayaran'])->name('pembayaran');
+            Route::get('pendaftaran', [LaporanController::class, 'pendaftaran'])->name('admin.pendaftaran');
+            Route::get('pembayaran', [LaporanController::class, 'pembayaran'])->name('admin.pembayaran');
         });
 
         Route::prefix('unduh')->group(function () {
-            Route::get('data casis', [LaporanController::class, 'datacasis'])->name('datacasis');
-            Route::get('laporan pendaftaran', [LaporanController::class, 'unduhpendaftaran'])->name('unduhpendaftaran');
-            Route::get('laporan pembayaran', [LaporanController::class, 'unduhpembayaran'])->name('unduhpembayaran');
+            Route::get('data-casis', [LaporanController::class, 'datacasis'])->name('admin.datacasis');
+            Route::get('laporan-pendaftaran', [LaporanController::class, 'unduhpendaftaran'])->name('admin.unduhpendaftaran');
+            Route::get('laporan-pembayaran', [LaporanController::class, 'unduhpembayaran'])->name('admin.unduhpembayaran');
         });
 
-        // Pengaturan
-        Route::prefix('beranda')->group(function () {
-            Route::get('pengaturan', [PengaturanController::class, 'pengaturan'])->name('photo.pengaturan');
-            Route::get('pengumuman seleksi', [PengaturanController::class, 'pengseleksi'])->name('pengumuman.pengseleksi');
+        // Data Master & Pengaturan
+        Route::prefix('data')->group(function () {
+            Route::get('landing-page', [PengaturanController::class, 'pengaturan'])->name('photo.pengaturan');
+            Route::get('pengumuman-seleksi', [PengaturanController::class, 'pengseleksi'])->name('pengumuman.pengseleksi');
             Route::post('update-status-seleksi', [PengaturanController::class, 'updateStatusSeleksi'])->name('pengumuman.updateStatusSeleksi');
-            Route::get('datauser', [PengaturanController::class, 'datauser'])->name('beranda.datauser');
-            Route::get('tahun ajar', [PengaturanController::class, 'tahun'])->name('beranda.tahun');
+            Route::get('user', [PengaturanController::class, 'datauser'])->name('beranda.datauser');
+            Route::get('tahun-ajaran', [PengaturanController::class, 'tahun'])->name('beranda.tahun');
         });
 
-        Route::post('/photos/upload', [PengaturanController::class, 'upload'])->name('photo.upload');
-
-        // Tahun Ajar
-        Route::prefix('tahun ajar')->group(function () {
+        // Tahun Ajar Action
+        Route::prefix('tahun-ajaran')->group(function () {
             Route::get('add', [PengaturanController::class, 'add'])->name('tahun.add');
             Route::post('simpan', [PengaturanController::class, 'simpan'])->name('tahun.simpan');
             Route::get('edit/{id}', [PengaturanController::class, 'edit'])->name('tahun.edit');
             Route::post('update/{id}', [PengaturanController::class, 'update'])->name('tahun.update');
             Route::delete('delete/{id}', [PengaturanController::class, 'delete'])->name('tahun.delete');
         });
+
+        Route::prefix('biaya-daftar-ulang')->group(function () {
+            Route::get('/', [BiayaDaftarUlangController::class, 'index'])->name('biaya-daftar-ulang.index');
+            Route::post('/', [BiayaDaftarUlangController::class, 'store'])->name('biaya-daftar-ulang.store');
+            Route::put('/{id}', [BiayaDaftarUlangController::class, 'update'])->name('biaya-daftar-ulang.update');
+            Route::delete('/{id}', [BiayaDaftarUlangController::class, 'destroy'])->name('biaya-daftar-ulang.destroy');
+        });
     });
+
+    Route::post('/photos/upload', [PengaturanController::class, 'upload'])->name('photo.upload');
 });

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\selekasi;
-use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\pembayaran;
 use App\Models\pendaftaran;
 use Illuminate\Http\Request;
@@ -44,7 +44,7 @@ class LaporanController extends Controller
             return redirect()->back()->with('error', 'No data available to generate PDF.');
         }
 
-        $pdf = app('dompdf.wrapper')->loadView('laporan.unduhpendaftaran', compact('data'));
+        $pdf = Pdf::loadView('laporan.unduhpendaftaran', compact('data'));
 
         return $pdf->download('laporan_pendaftaran.pdf');
     }
@@ -83,7 +83,7 @@ class LaporanController extends Controller
             return redirect()->back()->with('error', 'No data available to generate PDF.');
         }
 
-        $pdf = app('dompdf.wrapper')->loadView('laporan.unduhpembayaran', compact('data'));
+        $pdf = Pdf::loadView('laporan.unduhpembayaran', compact('data'));
 
         return $pdf->download('laporan_pembayaran.pdf');
 
@@ -124,7 +124,7 @@ class LaporanController extends Controller
             return redirect()->back()->with('error', 'No data available to generate PDF.');
         }
 
-        $pdf = app('dompdf.wrapper')->loadView('laporan.unduhseleksi', compact('data'));
+        $pdf = Pdf::loadView('laporan.unduhseleksi', compact('data'));
 
         return $pdf->download('laporan_seleksi.pdf');
 
@@ -159,7 +159,7 @@ class LaporanController extends Controller
             return redirect()->back()->with('error', 'No data available to generate PDF.');
         }
 
-        $pdf = app('dompdf.wrapper')->loadView('laporan.unduhditerima', compact('data'));
+        $pdf = Pdf::loadView('laporan.unduhditerima', compact('data'));
 
         return $pdf->download('laporan_seleksi.pdf');
 
@@ -194,7 +194,7 @@ class LaporanController extends Controller
             return redirect()->back()->with('error', 'No data available to generate PDF.');
         }
 
-        $pdf = app('dompdf.wrapper')->loadView('laporan.unduhgagal', compact('data'));
+        $pdf = Pdf::loadView('laporan.unduhgagal', compact('data'));
 
         return $pdf->download('laporan_seleksi.pdf');
 

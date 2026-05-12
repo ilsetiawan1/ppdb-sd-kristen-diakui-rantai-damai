@@ -17,7 +17,7 @@
                 </div>
                 <div class="card-body">
                     <p style="color: red;">Silakan mengisi form buat akun terlebih dahulu sebelum menginput pendaftaran:</p>
-                    <form method="post" action="/pendaftaran/proses" onsubmit="return validateForm()">
+                    <form method="post" action="/admin/pendaftaran/proses" onsubmit="return validateForm()">
                         @csrf
                         <!-- Form Pendaftaran Akun -->
                         <div class="row">
@@ -131,7 +131,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-info">SIMPAN</button>
-                        <a href="/pendaftaran" class="btn btn-warning">BATAL</a>
+                        <a href="/admin/pendaftaran" class="btn btn-warning">BATAL</a>
                     </form>
                 </div>
             </div>

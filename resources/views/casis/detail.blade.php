@@ -1,183 +1,192 @@
 @extends('layout.tampilan')
 
+@section('page-title', 'Detail Calon Siswa')
+
 @section('content')
+<div class="space-y-6">
 
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="card">
-                <div class="card-header bg-dark text-white">
-                    <div class="row justify-content-between align-items-center">
-                        <!-- Kolom Tambah Data -->
-                        <div class="col-sm-6 mb-2 mb-sm-0">
-                            <h3><b>DATA CALON SISWA</b></h3>
+    {{-- Header --}}
+    <div class="flex items-center justify-between bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-slate-100">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl shrink-0">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold text-slate-800 font-heading">Profil Calon Siswa</h1>
+                <p class="text-sm text-slate-500">Rincian data pendaftaran atas nama <span class="font-semibold text-slate-700">{{ $casis->nama }}</span></p>
+            </div>
+        </div>
+        <div class="hidden sm:block">
+            <a href="/admin/data/casis" class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800 rounded-lg text-sm font-medium transition-colors">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {{-- Kolom Kiri: Data Casis --}}
+        <div class="lg:col-span-2 space-y-6">
+            
+            {{-- Data Calon Siswa --}}
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-green-50 text-green-600 flex items-center justify-center">
+                        <i class="fas fa-address-card"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-800">Data Calon Siswa</h2>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">NIK</label>
+                            <div class="text-slate-800 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{{ $casis->nik ?: '-' }}</div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Nama Lengkap</label>
+                            <div class="text-slate-800 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{{ $casis->nama ?: '-' }}</div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Tempat Lahir</label>
+                            <div class="text-slate-800 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{{ $casis->tempat_lahir ?: '-' }}</div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Tanggal Lahir</label>
+                            <div class="text-slate-800 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">
+                                {{ $casis->tanggal_lahir ? \Carbon\Carbon::parse($casis->tanggal_lahir)->translatedFormat('d F Y') : '-' }}
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Jenis Kelamin</label>
+                            <div class="text-slate-800 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">
+                                @if($casis->jenis_kelamin == 'Laki-Laki')
+                                    <span class="text-blue-600"><i class="fas fa-mars mr-1"></i> Laki-Laki</span>
+                                @elseif($casis->jenis_kelamin == 'Perempuan')
+                                    <span class="text-pink-600"><i class="fas fa-venus mr-1"></i> Perempuan</span>
+                                @else
+                                    -
+                                @endif
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Anak Ke / Jml Saudara</label>
+                            <div class="text-slate-800 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{{ $casis->jml_saudara ?: 'belum diinput' }}</div>
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <p><b>Data Calon Siswa</b></p>
-                    <hr>
-                    <!-- menampilkan form data casis hanya read only -->
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="nik" class="form-label">NIK</label>
-                                <input type="text" class="form-control" id="nik" value="{{ $casis->nik }}" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="nama" class="form-label">Nama Lengkap</label>
-                                <input type="text" class="form-control" id="nama" value="{{ $casis->nama }}" readonly>
-                            </div>
-                        </div>
-                    </div>
+            </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
-                                <input type="text" class="form-control" id="tempat_lahir" value="{{ $casis->tempat_lahir }}" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
-                                <input type="text" class="form-control" id="tanggal_lahir" value="{{ \Carbon\Carbon::parse($casis->tanggal_lahir)->format('d/m/Y') }}" readonly>
-                            </div>
-                        </div>
+            {{-- Data Orang Tua --}}
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                        <i class="fas fa-users"></i>
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                                <input type="text" class="form-control" id="jenis_kelamin" value="{{ $casis->jenis_kelamin }}" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="jml_saudara" class="form-label">Jumlah Saudara</label>
-                                <input type="text" class="form-control" id="jml_saudara" value="{{ $casis->jml_saudara ?? 'belum diinput' }}" readonly>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr>
-                    <p><b>Data Orang Tua Siswa</b></p>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="nama_ortu" class="form-label">Nama Orang Tua</label>
-                                <input type="text" class="form-control" id="nama_ortu" value="{{ $casis->nama_ortu }}" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="pendidikan_ortu" class="form-label">Pendidikan Orang Tua</label>
-                                <input type="text" class="form-control" id="pendidikan_ortu" value="{{ $casis->pendidikan_ortu ?? 'belum diinput' }}" readonly>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="tempat_lahir_ortu" class="form-label">Tempat Lahir Orang Tua</label>
-                                <input type="text" class="form-control" id="tempat_lahir_ortu" value="{{ $casis->tempat_lahir_ortu ?? 'belum diinput' }}" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="tanggal_lahir_ortu" class="form-label">Tanggal Lahir Orang Tua</label>
-                                <input type="text" class="form-control" id="tanggal_lahir_ortu" value="{{ $casis && $casis->tanggal_lahir_ortu ? \Carbon\Carbon::parse($casis->tanggal_lahir_ortu)->format('d/m/y') : 'belum diinput' }}" readonly>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="pekerjaan_ortu" class="form-label">Pekerjaan Orang Tua</label>
-                                <input type="text" class="form-control" id="pekerjaan_ortu" value="{{ $casis->pekerjaan_ortu ?? 'belum diinput' }}" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="gaji_ortu" class="form-label">Gaji Orang Tua</label>
-                                <input type="text" class="form-control" id="gaji_ortu" value="{{ $casis->gaji_ortu ?? 'belum diinput' }}" readonly>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="alamat" class="form-label">Alamat</label>
-                                <input type="text" class="form-control" id="alamat" value="{{ $casis->alamat ?? 'belum diinput' }}" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="no_hp" class="form-label">No Telepon</label>
-                                <input type="text" class="form-control" id="no_hp" value="{{ $casis->no_hp ?? 'belum diinput' }}" readonly>
-                            </div>
-                        </div>
-                    </div>
-
-                    <a href="/data/casis" class="btn btn-primary">Kembali</a>
+                    <h2 class="text-lg font-bold text-slate-800">Data Orang Tua / Wali</h2>
                 </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Nama Orang Tua</label>
+                            <div class="text-slate-800 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{{ $casis->nama_ortu ?: '-' }}</div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Pendidikan</label>
+                            <div class="text-slate-800 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{{ $casis->pendidikan_ortu ?: 'belum diinput' }}</div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Tempat Lahir</label>
+                            <div class="text-slate-800 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{{ $casis->tempat_lahir_ortu ?: 'belum diinput' }}</div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Tanggal Lahir</label>
+                            <div class="text-slate-800 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">
+                                {{ $casis->tanggal_lahir_ortu ? \Carbon\Carbon::parse($casis->tanggal_lahir_ortu)->translatedFormat('d F Y') : 'belum diinput' }}
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Pekerjaan</label>
+                            <div class="text-slate-800 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{{ $casis->pekerjaan_ortu ?: 'belum diinput' }}</div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Penghasilan / Gaji</label>
+                            <div class="text-slate-800 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{{ $casis->gaji_ortu ?: 'belum diinput' }}</div>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Nomor Telepon (WhatsApp)</label>
+                            <div class="text-slate-800 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100 flex items-center gap-2">
+                                <i class="fab fa-whatsapp text-green-500"></i> {{ $casis->no_hp ?: 'belum diinput' }}
+                            </div>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Alamat Lengkap</label>
+                            <div class="text-slate-800 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{{ $casis->alamat ?: 'belum diinput' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+        </div>
+
+        {{-- Kolom Kanan: Berkas --}}
+        <div class="space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden sticky top-24">
+                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
+                        <i class="fas fa-folder-open"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-800">Berkas Upload</h2>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        @php
+                            $pendaftaran = $casis->pendaftaran;
+                            $documents = [
+                                'foto' => ['label' => 'Pas Foto 3x4', 'icon' => 'fa-image', 'color' => 'text-blue-500', 'bg' => 'bg-blue-50'],
+                                'akte' => ['label' => 'Akte Kelahiran', 'icon' => 'fa-file-contract', 'color' => 'text-green-500', 'bg' => 'bg-green-50'],
+                                'kk' => ['label' => 'Kartu Keluarga', 'icon' => 'fa-id-card', 'color' => 'text-amber-500', 'bg' => 'bg-amber-50'],
+                            ];
+                        @endphp
+
+                        @foreach($documents as $docField => $docInfo)
+                            @php
+                                $hasDoc = $pendaftaran && $pendaftaran->$docField;
+                                $file_path = $hasDoc ? asset('storage/berkas/' . $pendaftaran->$docField) : '#';
+                            @endphp
+                            <div class="flex items-center justify-between p-3 rounded-xl border {{ $hasDoc ? 'border-slate-200 bg-white' : 'border-dashed border-slate-200 bg-slate-50' }}">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg {{ $hasDoc ? $docInfo['bg'] . ' ' . $docInfo['color'] : 'bg-slate-100 text-slate-400' }} flex items-center justify-center">
+                                        <i class="fas {{ $docInfo['icon'] }}"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-semibold {{ $hasDoc ? 'text-slate-800' : 'text-slate-500' }}">{{ $docInfo['label'] }}</h4>
+                                        <p class="text-xs {{ $hasDoc ? 'text-green-600 font-medium' : 'text-slate-400' }}">
+                                            @if($hasDoc)
+                                                <i class="fas fa-check-circle mr-0.5"></i> Terunggah
+                                            @else
+                                                Belum diunggah
+                                            @endif
+                                        </p>
+                                    </div>
+                                </div>
+                                @if($hasDoc)
+                                    <a href="{{ $file_path }}" target="_blank" class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" title="Lihat Berkas">
+                                        <i class="fas fa-external-link-alt text-xs"></i>
+                                    </a>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            {{-- Mobile Back Button --}}
+            <div class="sm:hidden">
+                <a href="/admin/data/casis" class="flex items-center justify-center gap-2 w-full py-3 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-medium transition-colors">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Data Casis
+                </a>
             </div>
         </div>
     </div>
 </div>
-</div>
-
-<style>
-    /* CSS untuk Bahan Baku dan Supplier */
-    .form-label {
-        font-weight: bold;
-    }
-
-    .form-select,
-    .form-control {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 10px;
-        box-sizing: border-box;
-    }
-
-    .btn-primary {
-        background-color: #007bff;
-        color: #fff;
-        padding: 10px 10px;
-        border: none;
-        cursor: pointer;
-    }
-
-    /* Gaya tambahan sesuai kebutuhan Anda */
-    .content-wrapper {
-        margin: 10px;
-    }
-
-    .card {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-header {
-        background-color: #f8f9fa;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .card-body {
-        padding: 30px;
-    }
-</style>
-
 @endsection

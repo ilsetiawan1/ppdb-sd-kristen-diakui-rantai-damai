@@ -11,7 +11,7 @@ class pendaftaran extends Model
 
     protected $table = 'tb_pendaftaran';
     protected $fillable = ['id_pendaftaran', 'casis_id', 'status', 'akte', 'kk','tgl_pendaftaran','foto','ajar_id'];
-    protected $primaryKey = 'id_pendaftaran'; 
+    protected $primaryKey = 'id_pendaftaran';
 
     public function casis()
     {
@@ -26,6 +26,11 @@ class pendaftaran extends Model
     public function pembayaran()
     {
         return $this->hasOne(pembayaran::class, 'casis_id', 'casis_id');
+    }
+
+    public function seleksi()
+    {
+        return $this->hasOne(selekasi::class, 'pendaftaran_id', 'id_pendaftaran');
     }
 
 }

@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Dompdf\Dompdf;
-use Dompdf\Options;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\casis;
 use App\Models\selekasi;
 use Illuminate\Http\Request;
@@ -55,7 +54,7 @@ class PengumumanController extends Controller
         }
 
         // Render view ke dalam PDF
-        $pdf = app('dompdf.wrapper')->loadView('pengumuman.unduh', compact('data'));
+        $pdf = Pdf::loadView('pengumuman.unduh', compact('data'));
 
         return $pdf->download('pengumuman_casis_' . $id . '.pdf');
     }

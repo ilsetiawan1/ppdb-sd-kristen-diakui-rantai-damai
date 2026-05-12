@@ -1,120 +1,68 @@
 @extends('layout.tampilancasis')
 
+@section('title', 'Beranda Calon Siswa')
+
 @section('content')
-<div class="content-wrapper">
-    <div class="container-fluid">
-        <div class="row">
-
-            <!-- Pengumuman -->
-            @if(isset($tahunajar))
-            <div class="col-12 mb-4">
-                <div class="card bg-gradient-warning">
-                    <div class="card-header">
-                        <h3 class="card-text">Selamat Datang, <strong>{{ Auth::user()->name }}</strong>!</h3>
-                    </div>
-                    <div class="card-header">
-                        <h4 class="card-text"><i class="fas fa-bullhorn mr-2"></i>Pengumuman</h4>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            <li><i class="fas fa-calendar-alt mr-2"></i>Tahun Ajaran: <strong>{{$tahunajar->tahun_ajar}}</strong></li>
-                            <li><i class="fas fa-hourglass-start mr-2"></i>Pendaftaran Dimulai: <strong>{{ \Carbon\Carbon::parse($tahunajar->mulai_pendaftaran)->format('d-m-Y') }}</strong></li>
-                            <li><i class="fas fa-hourglass-end mr-2"></i>Pendaftaran Berakhir: <strong>{{ \Carbon\Carbon::parse($tahunajar->batas_pendaftaran)->format('d-m-Y') }}</strong></li>
-                            <li><i class="fas fa-hourglass-end mr-2"></i>Tanggal Seleksi: <strong>{{ \Carbon\Carbon::parse($tahunajar->tgl_seleksi)->format('d-m-Y') }} Pukul 08:00-10:00 WIB</strong></li>
-                            <li><i class="fas fa-hourglass-end mr-2"></i>Pendaftaran <strong>{{$tahunajar->status}}</strong></li>
-                        </ul>
-                        <div class="alert alert-light mt-3">
-                            <i class="fas fa-info-circle mr-2"></i>Hasil Seleksi dapat diunduh setelah menyelesaikan semua TAHAP.
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif
-            
-            <!-- Alur Pendaftaran -->
-            <div class="col-12 mb-4" style="margin-top: -20px;">
-                <div class="card bg-gradient-primary">
-                    <div class="card-header">
-                        <h4 class="card-text"><i class="fas fa-road mr-2"></i>Alur Pendaftaran</h4>
-                    </div>
-                    <div class="card-body">
-                        <ol class="">
-                            <li>Registrasi akun pada website</li>
-                            <li>Lengkapi data diri dan unggah dokumen yang diperlukan</li>
-                            <li>Lakukan pembayaran biaya pendaftaran</li>
-                            <li>Verifikasi pembayaran oleh admin</li>
-                            <li>Ikuti ujian seleksi Offline</li>
-                            <li>Tunggu pengumuman hasil seleksi</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tata Cara Pembayaran -->
-            <div class="col-12 mb-4" style="margin-top: -20px;">
-                <div class="card bg-gradient-success">
-                    <div class="card-header">
-                        <h4 class="card-text"><i class="fas fa-money-bill-wave mr-2"></i>Tata Cara Pembayaran</h4>
-                    </div>
-                    <div class="card-body">
-                        <p class="lead">Pembayaran dapat dilakukan melalui transfer bank ke rekening berikut:</p>
-                        <div class="bank-info">
-                            <p><i class="fas fa-university mr-2"></i><strong>Bank BNI</strong></p>
-                            <p><i class="fas fa-credit-card mr-2"></i>Nomor Rekening: 1234567890</p>
-                            <p><i class="fas fa-user mr-2"></i>Atas Nama: SD Islam Terpadu Hidayah</p>
-                        </div>
-                        <div class="alert alert-light mt-3">
-                            <i class="fas fa-info-circle mr-2"></i>Setelah melakukan pembayaran, harap unggah bukti transfer pada menu yang telah disediakan.
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+    
+    {{-- Page Header --}}
+    <div class="sm:flex sm:justify-between sm:items-center mb-8">
+        <div class="mb-4 sm:mb-0">
+            <h1 class="text-2xl md:text-3xl text-slate-800 font-bold font-heading">Portal Calon Siswa</h1>
+            <p class="text-slate-500 text-sm mt-1">Kelola data pendaftaran dan pantau status PPDB Anda di sini.</p>
+        </div>
+        
+        <div class="flex items-center gap-2 text-sm text-slate-500">
+            <a href="#" class="hover:text-green-600 font-medium transition-colors">Home</a>
+            <i class="fas fa-chevron-right text-xs"></i>
+            <span class="text-slate-800 font-medium">Beranda</span>
         </div>
     </div>
-</div>
-<!-- /.content-wrapper -->
-@endsection
 
-@push('styles')
-<style>
-    .card {
-        box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        border-radius: 10px;
-        overflow: hidden;
-    }
-    .card-header {
-        border-bottom: none;
-    }
-    .timeline {
-        list-style-type: none;
-        position: relative;
-        padding-left: 30px;
-    }
-    .timeline li {
-        position: relative;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-left: 2px solid rgba(255,255,255,0.5);
-        color: #fff;
-    }
-    .timeline li:before {
-        content: '';
-        position: absolute;
-        left: -8px;
-        top: 0;
-        background-color: #fff;
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-    }
-    .bank-info p {
-        margin-bottom: 5px;
-        color: #fff;
-    }
-    .alert-light {
-        background-color: rgba(255,255,255,0.2);
-        border: none;
-        color: #fff;
-    }
-</style>
-@endpush
+    {{-- Welcome Banner --}}
+    <div class="relative overflow-hidden bg-linear-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 sm:p-10 mb-8 shadow-lg shadow-blue-900/20">
+        <div class="relative z-10 md:w-2/3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/20 hover:bg-white/30 transition-colors rounded-full text-white/90 text-xs font-semibold tracking-wide uppercase mb-4 backdrop-blur-sm border border-white/10">
+                <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                PPDB {{ date('Y') }} / {{ date('Y')+1 }}
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-bold text-white mb-3 font-heading leading-tight">
+                Halo, <span class="text-blue-200">{{ Auth::user()->name }}</span> 👋
+            </h1>
+            <p class="text-blue-100 text-lg max-w-xl leading-relaxed">
+                Selamat datang di Portal Calon Siswa. Selesaikan tahapan pendaftaran Anda dan pantau terus informasi seleksi dari kami.
+            </p>
+        </div>
+        
+        {{-- Decorative Elements --}}
+        <div class="absolute right-0 top-0 w-1/3 h-full opacity-10 pointer-events-none hidden md:block">
+            <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full object-cover">
+                <circle cx="200" cy="200" r="150" stroke="white" stroke-width="40" stroke-dasharray="20 20"/>
+                <circle cx="200" cy="200" r="100" stroke="white" stroke-width="20"/>
+            </svg>
+        </div>
+        <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+    </div>
+
+    {{-- Main Content Grid --}}
+    <div class="grid lg:grid-cols-12 gap-8">
+        
+        {{-- Left Column: Pengumuman & Alur --}}
+        <div class="lg:col-span-7 flex flex-col gap-8">
+            @if(isset($tahunajar))
+                @include('components.casis.pengumuman-card')
+            @endif
+        </div>
+
+        <div class="lg:col-span-5 flex flex-col gap-8">
+            @include('components.casis.alur-card')
+        </div>
+
+        {{-- Full Width: Informasi --}}
+        <div class="lg:col-span-12 mt-2">
+            @include('components.casis.informasi-card')
+        </div>
+
+    </div>
+</div>
+@endsection

@@ -84,18 +84,19 @@ class PengaturanController extends Controller
 
     public function simpan(Request $request)
     {
-        //menyimpan data calon siswa
         $tahunajar = tahunajar::create([
             'tahun_ajar' => $request->tahun_ajar,
             'mulai_pendaftaran' => $request->mulai_pendaftaran,
             'batas_pendaftaran' => $request->batas_pendaftaran,
             'status' => $request->status,
             'tgl_seleksi' => $request->tgl_seleksi,
+            'kuota' => $request->kuota,
         ]);
 
-        // Redirect dengan pesan sukses
         return redirect()->route('beranda.tahun')->with('success', 'Data Berhasil Disimpan');
     }
+
+
 
     public function edit($id)
     {
@@ -105,20 +106,17 @@ class PengaturanController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Ambil data dari formulir
         $data = [
             'tahun_ajar' => $request->input('tahun_ajar'),
             'mulai_pendaftaran' => $request->input('mulai_pendaftaran'),
             'batas_pendaftaran' => $request->input('batas_pendaftaran'),
             'status' => $request->input('status'),
             'tgl_seleksi' => $request->input('tgl_seleksi'),
-            // tambahkan field lain sesuai kebutuhan
+            'kuota' => $request->input('kuota'),
         ];
 
-        // Perbarui data dalam basis data
         tahunajar::where('id_ajar', $id)->update($data);
 
-        // Redirect dengan pesan sukses
         return redirect()->route('beranda.tahun')->with('success', 'Data Berhasil Diperbarui');
     }
 

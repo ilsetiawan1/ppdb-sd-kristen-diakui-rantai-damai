@@ -1,261 +1,98 @@
 @extends('layout.tampilancasis')
 
+@section('title', 'Data Pendaftaran')
+
 @section('content')
-
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                <strong>Success!</strong> {{ session('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @elseif (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                <strong>Error!</strong> {{ session('error') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="row justify-content-between align-items-center">
-                        <!-- Kolom Tambah Data -->
-                        <div class="col-sm-6 mb-2 mb-sm-0">
-                            <h2><b>DATA CALON SISWA</b></h2>
-                        </div>
-                        <div class="text-center">
-                            <a href="/beranda/form/casis" class="btn btn-info">Isi Data Diri</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Data Calon Siswa</h5>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table table-striped">
-                                        <tr>
-                                            <th>UserName</th>
-                                            <td>{{ $user->name }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Email</th>
-                                            <td>{{ $user->email }}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Data Calon Siswa</h5>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table table-striped">
-                                        <tr>
-                                            <th>NIK</th>
-                                            <td>{{ $user->casis->nik ?? 'belum diinput' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Nama Lengkap</th>
-                                            <td>{{ $user->casis->nama ?? 'belum diinput' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Tempat Lahir</th>
-                                            <td>{{ $user->casis->tempat_lahir ?? 'belum diinput' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Tanggal Lahir</th>
-                                            <td>
-                                                @if($user->casis && $user->casis->tanggal_lahir)
-                                                {{ \Carbon\Carbon::parse($user->casis->tanggal_lahir)->format('d/m/y') }}
-                                                @else
-                                                belum diinput
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Jenis Kelamin</th>
-                                            <td>{{ $user->casis->jenis_kelamin ?? 'belum diinput' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Jumlah Saudara</th>
-                                            <td>{{ $user->casis->jml_saudara ?? 'belum diinput' }}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 mb-4">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Data Orang Tua Siswa</h5>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table table-striped">
-                                        <tr>
-                                            <th>Nama Orang Tua</th>
-                                            <td>{{ $user->casis->nama_ortu ?? 'belum diinput' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Pendidikan Orang Tua</th>
-                                            <td>{{ $user->casis->pendidikan_ortu ?? 'belum diinput' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Tempat Lahir Orang Tua</th>
-                                            <td>{{ $user->casis->tempat_lahir_ortu ?? 'belum diinput' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Tanggal Lahir Orang Tua</th>
-                                            <td>
-                                                @if($user->casis && $user->casis->tanggal_lahir)
-                                                {{ \Carbon\Carbon::parse($user->casis->tanggal_lahir_ortu)->format('d/m/y') }}
-                                                @else
-                                                belum diinput
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Pekerjaan Orang Tua</th>
-                                            <td>{{ $user->casis->pekerjaan_ortu ?? 'belum diinput' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Gaji Orang Tua</th>
-                                            <td>Rp. {{ $user->casis->gaji_ortu ?? 'belum diinput' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Alamat</th>
-                                            <td>{{ $user->casis->alamat ?? 'belum diinput' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>No Telepon</th>
-                                            <td>{{ $user->casis->no_hp ?? 'belum diinput' }}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Berkas Calon Siswa</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        @php
-                                        $berkas = [
-                                        'akte' => 'Akte Kelahiran',
-                                        'kk' => 'Kartu Keluarga',
-                                        'foto' => 'Pas Foto'
-                                        ];
-                                        @endphp
-
-                                        @foreach($berkas as $key => $label)
-                                        <div class="col-md-4 text-center">
-                                            <h6>{{ $label }}</h6>
-                                            @if(isset($user->casis) && isset($user->casis->pendaftaran) && $user->casis->pendaftaran->$key)
-                                            @php
-                                            $file_name = $user->casis->pendaftaran->$key;
-                                            $file_path = asset('storage/berkas/' . $file_name);
-                                            $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
-                                            @endphp
-                                            <a href="{{ $file_path }}" target="_blank" class="d-block mb-2">
-                                                @if(in_array($file_extension, ['pdf']))
-                                                <img src="{{ asset('template/dist/img/pdf.png') }}" alt="PDF Icon" style="max-height: 100px;">
-                                                @elseif(in_array($file_extension, ['jpg', 'jpeg', 'png', 'gif']))
-                                                <img src="{{ $file_path }}" class="img-thumbnail" style="max-height: 100px;" alt="{{ $label }}">
-                                                @else
-                                                <img src="{{ asset('template/dist/img/pdf.png') }}" alt="File Icon" style="max-height: 100px;">
-                                                @endif
-                                            </a>
-                                            <small>{{ strtoupper($file_extension) }} - Klik untuk melihat</small>
-                                            @else
-                                            <p>Belum Ada</p>
-                                            @endif
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+    
+    {{-- Alerts --}}
+    @if (session('success'))
+    <div x-data="{ show: true }" x-show="show" class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg flex items-start justify-between">
+        <div class="flex items-start gap-3">
+            <i class="fas fa-check-circle text-green-500 mt-0.5"></i>
+            <div>
+                <h4 class="text-sm font-bold text-green-800">Berhasil!</h4>
+                <p class="text-sm text-green-700 mt-1">{{ session('success') }}</p>
             </div>
         </div>
+        <button @click="show = false" class="text-green-500 hover:text-green-700"><i class="fas fa-times"></i></button>
     </div>
+    @elseif (session('error'))
+    <div x-data="{ show: true }" x-show="show" class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex items-start justify-between">
+        <div class="flex items-start gap-3">
+            <i class="fas fa-exclamation-circle text-red-500 mt-0.5"></i>
+            <div>
+                <h4 class="text-sm font-bold text-red-800">Error!</h4>
+                <p class="text-sm text-red-700 mt-1">{{ session('error') }}</p>
+            </div>
+        </div>
+        <button @click="show = false" class="text-red-500 hover:text-red-700"><i class="fas fa-times"></i></button>
+    </div>
+    @endif
+
+    {{-- Page Header --}}
+    <div class="sm:flex sm:justify-between sm:items-center mb-8">
+        <div class="mb-4 sm:mb-0">
+            <h1 class="text-2xl md:text-3xl text-slate-800 font-bold font-heading">Data Pendaftaran</h1>
+            <p class="text-slate-500 text-sm mt-1">Lengkapi profil calon siswa dan unggah dokumen persyaratan.</p>
+        </div>
+        
+        <div class="flex items-center gap-3">
+            @if(!$kuotaTersedia)
+                <span class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-500 text-sm font-medium rounded-lg cursor-not-allowed">
+                    <i class="fas fa-lock"></i> Kuota Penuh
+                </span>
+            @endif
+        </div>
+    </div>
+
+    @if(!$kuotaTersedia)
+        <div class="mb-6 bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg flex items-start gap-3">
+            <i class="fas fa-exclamation-triangle text-amber-500 mt-0.5 text-lg"></i>
+            <div>
+                <h4 class="font-bold text-amber-800">Pendaftaran Tidak Tersedia!</h4>
+                <p class="text-sm text-amber-700 mt-1">{{ $pesanKuota }}</p>
+                <p class="text-sm text-amber-700 mt-2">Silakan hubungi panitia untuk informasi lebih lanjut.</p>
+            </div>
+        </div>
+    @endif
+
+    {{-- Summary Card --}}
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-xl text-slate-500 font-bold border border-slate-200">
+                {{ substr($user->name, 0, 1) }}
+            </div>
+            <div>
+                <h3 class="font-bold text-slate-800">{{ $user->name }}</h3>
+                <p class="text-sm text-slate-500">{{ $user->email }}</p>
+            </div>
+        </div>
+        <div class="flex flex-col items-end">
+            <span class="text-xs text-slate-500 mb-1">Status Pendaftaran</span>
+            @if(isset($user->casis) && isset($user->casis->pendaftaran))
+                <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">
+                    {{ $user->casis->pendaftaran->status }}
+                </span>
+            @else
+                <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-full">Belum Mengisi</span>
+            @endif
+        </div>
+    </div>
+
+    @if($kuotaTersedia)
+        {{-- Data Grid --}}
+        <div class="grid lg:grid-cols-2 gap-6 mb-6">
+            {{-- Biodata --}}
+            @include('components.casis.data-casis')
+
+            {{-- Data Ortu --}}
+            @include('components.casis.data-ortu')
+        </div>
+
+        {{-- Full Width: Berkas --}}
+        @include('components.casis.berkas')
+    @endif
+
 </div>
-
-<style>
-    /* CSS untuk Tampilan Keren */
-    .content-wrapper {
-        margin: 20px;
-    }
-
-    .card {
-        border: none;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease-in-out;
-    }
-
-    .card-header {
-        background-color: #343a40;
-        color: #fff;
-        padding: 15px 20px;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-    }
-
-    .card-body {
-        padding: 20px;
-    }
-
-    .table {
-        margin-bottom: 0;
-    }
-
-    .table th {
-        font-weight: 600;
-        color: #343a40;
-        border-bottom: 2px solid #dee2e6;
-    }
-
-    .table td {
-        color: #6c757d;
-        border-bottom: 1px solid #dee2e6;
-    }
-
-    .btn-info {
-        background-color: #17a2b8;
-        border-color: #17a2b8;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease-in-out;
-    }
-
-    .btn-info:hover {
-        background-color: #138496;
-        border-color: #117a8b;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        transform: translateY(-3px);
-    }
-</style>
-
 @endsection

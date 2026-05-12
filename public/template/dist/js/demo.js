@@ -7,17 +7,10 @@
 
 /* eslint-disable camelcase */
 
-(function ($) {
+(($) => {
   'use strict'
 
-  setTimeout(function () {
-    if (window.___browserSync___ === undefined && Number(localStorage.getItem('AdminLTE:Demo:MessageShowed')) < Date.now()) {
-      localStorage.setItem('AdminLTE:Demo:MessageShowed', (Date.now()) + (15 * 60 * 1000))
-      // eslint-disable-next-line no-alert
-      alert('Selamat Datang !');
-      // alert('You load AdminLTE\'s "demo.js", \nthis file is only created for testing purposes!')
-    }
-  }, 1000)
+  
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
@@ -562,7 +555,7 @@
   }, true))
 
   var active_accent_color = null
-  $('body')[0].classList.forEach(function (className) {
+  $('body')[0].classList.forEach((className) => {
     if (accent_colors.indexOf(className) > -1 && active_accent_color === null) {
       active_accent_color = className.replace('navbar-', 'bg-')
     }
@@ -580,7 +573,7 @@
     var color = $(this).find('option:selected').attr('class')
     var sidebar_class = 'sidebar-dark-' + color.replace('bg-', '')
     var $sidebar = $('.main-sidebar')
-    sidebar_skins.forEach(function (skin) {
+    sidebar_skins.forEach((skin) => {
       $sidebar.removeClass(skin)
       $sidebar_light_variants.removeClass(skin.replace('sidebar-dark-', 'bg-')).removeClass('text-light')
     })
@@ -596,7 +589,7 @@
   var active_sidebar_dark_color = null
   var $main_sidebar = $('.main-sidebar')
   if ($main_sidebar.length > 0) {
-    $main_sidebar[0].classList.forEach(function (className) {
+    $main_sidebar[0].classList.forEach((className) => {
       var color = className.replace('sidebar-dark-', 'bg-')
       if (sidebar_colors.indexOf(color) > -1 && active_sidebar_dark_color === null) {
         active_sidebar_dark_color = color
@@ -616,7 +609,7 @@
     var color = $(this).find('option:selected').attr('class')
     var sidebar_class = 'sidebar-light-' + color.replace('bg-', '')
     var $sidebar = $('.main-sidebar')
-    sidebar_skins.forEach(function (skin) {
+    sidebar_skins.forEach((skin) => {
       $sidebar.removeClass(skin)
       $sidebar_dark_variants.removeClass(skin.replace('sidebar-light-', 'bg-')).removeClass('text-light')
     })
@@ -631,7 +624,7 @@
 
   var active_sidebar_light_color = null
   if ($main_sidebar.length > 0) {
-    $main_sidebar[0].classList.forEach(function (className) {
+    $main_sidebar[0].classList.forEach((className) => {
       var color = className.replace('sidebar-light-', 'bg-')
       if (sidebar_colors.indexOf(color) > -1 && active_sidebar_light_color === null) {
         active_sidebar_light_color = color
@@ -652,10 +645,10 @@
   $container.append($logo_variants)
   var $clear_btn = $('<a />', {
     href: '#'
-  }).text('clear').on('click', function (e) {
+  }).text('clear').on('click', (e) => {
     e.preventDefault()
     var $logo = $('.brand-link')
-    logo_skins.forEach(function (skin) {
+    logo_skins.forEach((skin) => {
       $logo.removeClass(skin)
     })
   })
@@ -670,7 +663,7 @@
       $logo.removeClass('text-black')
     }
 
-    logo_skins.forEach(function (skin) {
+    logo_skins.forEach((skin) => {
       $logo.removeClass(skin)
     })
 
@@ -687,7 +680,7 @@
   var active_brand_color = null
   var $brand_link = $('.brand-link')
   if ($brand_link.length > 0) {
-    $brand_link[0].classList.forEach(function (className) {
+    $brand_link[0].classList.forEach((className) => {
       if (logo_skins.indexOf(className) > -1 && active_brand_color === null) {
         active_brand_color = className.replace('navbar-', 'bg-')
       }

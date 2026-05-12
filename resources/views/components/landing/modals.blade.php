@@ -1,0 +1,402 @@
+{{-- Auth App Script specifically for handling captchas --}}
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('authModal', () => ({
+            num1: 0,
+            num2: 0,
+            userAnswer: '',
+            
+            init() {
+                this.generateCaptcha();
+            },
+            
+            generateCaptcha() {
+                this.num1 = Math.floor(Math.random() * 9) + 1;
+                this.num2 = Math.floor(Math.random() * 9) + 1;
+                this.userAnswer = '';
+            },
+            
+            validateCaptcha(e) {
+                if (parseInt(this.userAnswer) !== (this.num1 + this.num2)) {
+                    e.preventDefault();
+                    alert('Jawaban captcha salah! Silakan hitung kembali.');
+                    this.generateCaptcha();
+                    return false;
+                }
+                return true;
+            }
+        }));
+    });
+</script>
+
+{{-- Login Modal --}}
+<div x-show="loginModalOpen" 
+     class="fixed inset-0 z-[100] overflow-y-auto" 
+     aria-labelledby="modal-title" role="dialog" aria-modal="true" style="display: none;">
+    
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+        {{-- Background overlay --}}
+        <div x-show="loginModalOpen" 
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" 
+             @click="loginModalOpen = false" aria-hidden="true"></div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        {{-- Modal panel --}}
+        <div x-show="loginModalOpen"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             x-data="authModal"
+             class="relative inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-4xl w-full border border-slate-100/50">
+            
+            <div class="flex flex-col md:flex-row h-full">
+                {{-- Left Side: Branding / Banner (Hidden on Mobile) --}}
+                <div class="hidden md:flex md:w-5/12 bg-green-700 relative flex-col justify-between overflow-hidden">
+                    <div class="absolute inset-0 opacity-20">
+                        <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <defs>
+                                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/>
+                                </pattern>
+                            </defs>
+                            <rect width="100" height="100" fill="url(#grid)"/>
+                        </svg>
+                    </div>
+                    
+                    {{-- Decorative Blobs --}}
+                    <div class="absolute -top-24 -left-24 w-64 h-64 bg-green-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+                    <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-amber-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
+
+                    <div class="p-10 relative z-10 flex flex-col h-full justify-center">
+                        <div class="w-16 h-16 bg-white rounded-2xl p-2 mb-8 shadow-lg flex items-center justify-center">
+                            <img src="{{ asset('images/logo-sd-kristen-diakui-rantai-damai.png') }}" alt="Logo" class="w-full h-full object-contain">
+                        </div>
+                        <h3 class="text-3xl font-bold text-white font-heading mb-4 leading-tight">Selamat Datang Kembali!</h3>
+                        <p class="text-green-50 text-base leading-relaxed opacity-90">
+                            Silakan masuk untuk melanjutkan proses pendaftaran, melengkapi dokumen, atau memantau status putra-putri Anda.
+                        </p>
+                    </div>
+                </div>
+
+                {{-- Right Side: Form --}}
+                <div class="w-full md:w-7/12 bg-white relative">
+                    {{-- Close Button --}}
+                    <button @click="loginModalOpen = false" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center transition-colors focus:outline-none z-10">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+
+                    <div class="p-8 sm:p-12">
+                        <div class="md:hidden flex items-center gap-3 mb-8">
+                            <img src="{{ asset('images/logo-sd-kristen-diakui-rantai-damai.png') }}" alt="Logo" class="w-10 h-10 object-contain">
+                            <h3 class="text-2xl font-bold text-slate-800 font-heading">Login Akun</h3>
+                        </div>
+
+                        <div class="hidden md:block mb-8">
+                            <h3 class="text-2xl font-bold text-slate-800 font-heading">Login ke Dashboard</h3>
+                            <p class="text-slate-500 mt-1">Masukkan kredensial Anda untuk mengakses portal.</p>
+                        </div>
+
+                        {{-- Alert Error jika gagal login --}}
+                        @if(session('error') || ($errors->any() && !old('name')))
+                            <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex items-start gap-3">
+                                <i class="fas fa-exclamation-circle text-red-500 mt-0.5"></i>
+                                <div>
+                                    <h4 class="text-sm font-bold text-red-800">Login Gagal</h4>
+                                    <p class="text-sm text-red-600 mt-1">Email atau password yang Anda masukkan tidak sesuai. Silakan coba lagi.</p>
+                                </div>
+                            </div>
+                        @endif
+
+                        <form action="{{ route('loginproses') }}" method="post" @submit="validateCaptcha($event)">
+                            @csrf
+                            <div class="space-y-6">
+                                {{-- Email Input --}}
+                                <div>
+                                    <label for="loginEmail" class="block text-sm font-semibold text-slate-700 mb-2">Email Aktif</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                                            <i class="fas fa-envelope"></i>
+                                        </div>
+                                        <input type="email" name="email" id="loginEmail" value="{{ old('email') }}" 
+                                               class="pl-11 w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-green-500/10 focus:border-green-500 transition-all font-medium" 
+                                               placeholder="contoh@email.com" required>
+                                    </div>
+                                    @error('email')
+                                        <p class="text-red-500 text-xs font-medium mt-1.5"><i class="fas fa-info-circle mr-1"></i>{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                
+                                {{-- Password Input --}}
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label for="loginPassword" class="block text-sm font-semibold text-slate-700">Password</label>
+                                        <a href="#" class="text-xs font-semibold text-green-600 hover:text-green-700 hover:underline">Lupa password?</a>
+                                    </div>
+                                    <div class="relative" x-data="{ show: false }">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                                            <i class="fas fa-lock"></i>
+                                        </div>
+                                        <input :type="show ? 'text' : 'password'" name="password" id="loginPassword" 
+                                               class="pl-11 pr-11 w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-green-500/10 focus:border-green-500 transition-all font-medium" 
+                                               placeholder="••••••••" required>
+                                        <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-green-600 focus:outline-none">
+                                            <i class="fas" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                        </button>
+                                    </div>
+                                    @error('password')
+                                        <p class="text-red-500 text-xs font-medium mt-1.5"><i class="fas fa-info-circle mr-1"></i>{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                {{-- Captcha --}}
+                                <div>
+                                    <label class="block text-sm font-semibold text-slate-700 mb-2">Verifikasi Keamanan</label>
+                                    <div class="flex gap-3">
+                                        <div class="shrink-0 flex items-center justify-center gap-2 bg-slate-100 border border-slate-200 px-4 py-3 rounded-xl font-bold text-lg text-slate-700 shadow-inner min-w-[120px]">
+                                            <span x-text="num1"></span>
+                                            <span class="text-green-600">+</span>
+                                            <span x-text="num2"></span>
+                                            <span class="text-slate-400">=</span>
+                                        </div>
+                                        <input type="hidden" name="num1" :value="num1">
+                                        <input type="hidden" name="num2" :value="num2">
+                                        <input type="number" name="captcha" x-model="userAnswer" 
+                                               class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 focus:bg-white focus:outline-none focus:ring-4 focus:ring-green-500/10 focus:border-green-500 transition-all font-bold text-lg placeholder-slate-300 text-center" 
+                                               placeholder="?" required>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-green-600/30 hover:shadow-green-600/40 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 mt-4">
+                                    Masuk ke Dashboard <i class="fas fa-arrow-right text-sm"></i>
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="mt-8 text-center border-t border-slate-100 pt-6">
+                            <p class="text-sm font-medium text-slate-600">
+                                Belum mendaftar? 
+                                <button @click="loginModalOpen = false; setTimeout(() => registerModalOpen = true, 300)" class="text-green-600 font-bold hover:text-green-700 hover:underline">
+                                    Buat Akun Sekarang
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Register Modal --}}
+<div x-show="registerModalOpen" 
+     class="fixed inset-0 z-[100] overflow-y-auto" 
+     aria-labelledby="modal-title" role="dialog" aria-modal="true" style="display: none;">
+    
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+        <div x-show="registerModalOpen" 
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" 
+             @click="registerModalOpen = false" aria-hidden="true"></div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div x-show="registerModalOpen"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             x-data="authModal"
+             class="relative inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle max-w-4xl w-full border border-slate-100/50">
+            
+            <div class="flex flex-col md:flex-row h-full">
+                {{-- Left Side: Branding / Banner (Hidden on Mobile) --}}
+                <div class="hidden md:flex md:w-5/12 bg-amber-500 relative flex-col justify-between overflow-hidden">
+                    <div class="absolute inset-0 opacity-20">
+                        <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <defs>
+                                <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
+                                    <circle cx="2" cy="2" r="2" fill="white"/>
+                                </pattern>
+                            </defs>
+                            <rect width="100" height="100" fill="url(#dots)"/>
+                        </svg>
+                    </div>
+                    
+                    {{-- Decorative Blobs --}}
+                    <div class="absolute -top-24 -left-24 w-64 h-64 bg-amber-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+                    <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-red-400 rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
+
+                    <div class="p-10 relative z-10 flex flex-col h-full justify-center">
+                        <div class="w-16 h-16 bg-white rounded-2xl p-2 mb-8 shadow-lg flex items-center justify-center">
+                            <img src="{{ asset('images/logo-sd-kristen-diakui-rantai-damai.png') }}" alt="Logo" class="w-full h-full object-contain">
+                        </div>
+                        <h3 class="text-3xl font-bold text-white font-heading mb-4 leading-tight">Mulai Pendaftaran Anda</h3>
+                        <div class="space-y-4 text-amber-50">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check-circle mt-1 opacity-80"></i>
+                                <p class="text-sm font-medium">Buat akun dengan mudah</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check-circle mt-1 opacity-80"></i>
+                                <p class="text-sm font-medium">Isi formulir pendaftaran online</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-check-circle mt-1 opacity-80"></i>
+                                <p class="text-sm font-medium">Pantau hasil seleksi secara realtime</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Right Side: Form --}}
+                <div class="w-full md:w-7/12 bg-white relative">
+                    {{-- Close Button --}}
+                    <button @click="registerModalOpen = false" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center transition-colors focus:outline-none z-10">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+
+                    <div class="p-8 sm:p-12">
+                        <div class="md:hidden flex items-center gap-3 mb-8">
+                            <img src="{{ asset('images/logo-sd-kristen-diakui-rantai-damai.png') }}" alt="Logo" class="w-10 h-10 object-contain">
+                            <h3 class="text-2xl font-bold text-slate-800 font-heading">Registrasi</h3>
+                        </div>
+
+                        <div class="hidden md:block mb-6">
+                            <h3 class="text-2xl font-bold text-slate-800 font-heading">Registrasi Akun Baru</h3>
+                            <p class="text-slate-500 mt-1">Isi formulir di bawah ini untuk membuat akun PPDB.</p>
+                        </div>
+
+                        {{-- Alert Error Validation --}}
+                        @if($errors->any() && old('name'))
+                            <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-3 rounded-r-lg">
+                                <p class="text-sm font-bold text-red-800 mb-1">Terdapat Kesalahan:</p>
+                                <ul class="list-disc pl-5 text-xs text-red-600 space-y-1 font-medium">
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <form action="{{ route('registrasi') }}" method="post" @submit="
+                            if(document.getElementById('newPassword').value !== document.getElementById('confirmPassword').value) {
+                                $event.preventDefault();
+                                alert('Konfirmasi password tidak cocok!');
+                                return false;
+                            }
+                            return validateCaptcha($event);
+                        ">
+                            @csrf
+                            <div class="space-y-4">
+                                {{-- Nama Casis --}}
+                                <div>
+                                    <label for="newUsername" class="block text-sm font-semibold text-slate-700 mb-1.5">Nama Lengkap Casis</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <input type="text" name="name" id="newUsername" value="{{ old('name') }}"
+                                               class="pl-11 w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all font-medium" 
+                                               placeholder="Sesuai Akta Kelahiran" required>
+                                    </div>
+                                </div>
+
+                                {{-- Email --}}
+                                <div>
+                                    <label for="newEmail" class="block text-sm font-semibold text-slate-700 mb-1.5">Email Aktif</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                                            <i class="fas fa-envelope"></i>
+                                        </div>
+                                        <input type="email" name="email" id="newEmail" value="{{ old('email') }}"
+                                               class="pl-11 w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all font-medium" 
+                                               placeholder="nama@email.com" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    {{-- Password --}}
+                                    <div>
+                                        <label for="newPassword" class="block text-sm font-semibold text-slate-700 mb-1.5">Password</label>
+                                        <div class="relative" x-data="{ show: false }">
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                                <i class="fas fa-lock text-sm"></i>
+                                            </div>
+                                            <input :type="show ? 'text' : 'password'" name="password" id="newPassword" 
+                                                   class="pl-9 pr-9 w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all text-sm font-medium" 
+                                                   placeholder="Min. 8 karakter" required minlength="8">
+                                            <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-amber-500 focus:outline-none">
+                                                <i class="fas text-sm" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {{-- Konfirmasi Password --}}
+                                    <div>
+                                        <label for="confirmPassword" class="block text-sm font-semibold text-slate-700 mb-1.5">Ulangi Password</label>
+                                        <div class="relative" x-data="{ show: false }">
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                                <i class="fas fa-check-circle text-sm"></i>
+                                            </div>
+                                            <input :type="show ? 'text' : 'password'" name="password_confirmation" id="confirmPassword" 
+                                                   class="pl-9 pr-9 w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all text-sm font-medium" 
+                                                   placeholder="Ulangi password" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Captcha --}}
+                                <div class="pt-2">
+                                    <label class="block text-sm font-semibold text-slate-700 mb-2">Verifikasi Keamanan</label>
+                                    <div class="flex gap-3">
+                                        <div class="shrink-0 flex items-center justify-center gap-2 bg-slate-100 border border-slate-200 px-3 py-2.5 rounded-xl font-bold text-base text-slate-700 shadow-inner min-w-[100px]">
+                                            <span x-text="num1"></span>
+                                            <span class="text-amber-500">+</span>
+                                            <span x-text="num2"></span>
+                                            <span class="text-slate-400">=</span>
+                                        </div>
+                                        <input type="hidden" name="num1" :value="num1">
+                                        <input type="hidden" name="num2" :value="num2">
+                                        <input type="number" name="captcha" x-model="userAnswer" 
+                                               class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:bg-white focus:outline-none focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all font-bold text-base placeholder-slate-300 text-center" 
+                                               placeholder="?" required>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-amber-500/30 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all mt-4">
+                                    Daftar Sekarang
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="mt-6 text-center border-t border-slate-100 pt-5">
+                            <p class="text-sm font-medium text-slate-600">
+                                Sudah punya akun? 
+                                <button @click="registerModalOpen = false; setTimeout(() => loginModalOpen = true, 300)" class="text-amber-600 font-bold hover:text-amber-700 hover:underline">
+                                    Masuk di sini
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

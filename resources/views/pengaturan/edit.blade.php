@@ -1,69 +1,44 @@
 @extends('layout.tampilan')
 
 @section('content')
-
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="card">
-                <div class="card-header bg-dark text-white">
-                    <div class="row justify-content-between align-items-center">
-                        <!-- Kolom Tambah Data -->
-                        <div class="col-sm-6 mb-2 mb-sm-0">
-                            <h3><b>FORM DATA TAHUN AJARAN</b></h3>
-                        </div>
-                    </div>
+                <div class="card-header bg-info text-white">
+                    <h3 class="card-title"><i class="fas fa-edit mr-2"></i><b>FORM EDIT TAHUN AJARAN</b></h3>
                 </div>
                 <div class="card-body">
-                    <p style="color: red;"></p>
-                    <form method="post" action="/tahun ajar/update/{{$data->id_ajar}}">
+                    <form method="post" action="{{ route('tahun.update', $data->id_ajar) }}">
                         @csrf
-
-                        <!-- Form Pendaftaran Calon Siswa -->
+                        @method('PUT')
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="tahun_ajar" class="form-label">Tahun Ajar</label>
-                                    <input type="text" class="form-control" name="tahun_ajar" value="{{$data->tahun_ajar}}" required>
+                                <div class="form-group">
+                                    <label for="tahun_ajar">Tahun Ajaran</label>
+                                    <input type="text" class="form-control" id="tahun_ajar" name="tahun_ajar" value="{{ $data->tahun_ajar }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mulai_pendaftaran">Tanggal Mulai Pendaftaran</label>
+                                    <input type="date" class="form-control" id="mulai_pendaftaran" name="mulai_pendaftaran" value="{{ $data->mulai_pendaftaran }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="batas_pendaftaran">Tanggal Batas Pendaftaran</label>
+                                    <input type="date" class="form-control" id="batas_pendaftaran" name="batas_pendaftaran" value="{{ $data->batas_pendaftaran }}" required>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <div class="mb-3">
-                                        <label for="mulai_pendaftaran" class="form-label">Tanggal Mulai Pendaftaran</label>
-                                        <input type="date" class="form-control" name="mulai_pendaftaran" value="{{$data->mulai_pendaftaran}}" required>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="tgl_seleksi">Tanggal Seleksi</label>
+                                    <input type="date" class="form-control" id="tgl_seleksi" name="tgl_seleksi" value="{{ $data->tgl_seleksi }}" required>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="batas_pendaftaran" class="form-label">Tanggal Batas Pendaftaran</label>
-                                    <input type="date" class="form-control" name="batas_pendaftaran" value="{{$data->batas_pendaftaran}}" required>
+                                <div class="form-group">
+                                    <label for="kuota">Kuota</label>
+                                    <input type="number" class="form-control" id="kuota" name="kuota" value="{{ $data->kuota }}" required>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="tgl_seleksi" class="form-label">Tanggal Seleksi</label>
-                                    <input type="date" class="form-control" name="tgl_seleksi" value="{{$data->tgl_seleksi}}" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="status" class="form-label">Status</label>
-                                    <select class="form-select" name="status" required>
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select class="form-control" id="status" name="status" required>
                                         <option value="Berlangsung" {{ $data->status == 'Berlangsung' ? 'selected' : '' }}>Berlangsung</option>
                                         <option value="Berakhir" {{ $data->status == 'Berakhir' ? 'selected' : '' }}>Berakhir</option>
                                         <option value="Belum Dimulai" {{ $data->status == 'Belum Dimulai' ? 'selected' : '' }}>Belum Dimulai</option>
@@ -71,58 +46,33 @@
                                 </div>
                             </div>
                         </div>
-
-                        <button type="submit" class="btn btn-info">UPDATE</button>
-                        <a href="/beranda/tahun ajar" class="btn btn-warning">BATAL</a>
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Update</button>
+                            <a href="{{ route('beranda.tahun') }}" class="btn btn-secondary"><i class="fas fa-times mr-2"></i>Batal</a>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+@endsection
 
+@push('styles')
 <style>
-    /* CSS untuk Bahan Baku dan Supplier */
-    .form-label {
-        font-weight: bold;
-    }
-
-    .form-select,
-    .form-control {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 10px;
-        box-sizing: border-box;
-    }
-
-    .btn-primary {
-        background-color: #007bff;
-        color: #fff;
-        padding: 10px 10px;
-        border: none;
-        cursor: pointer;
-    }
-
-    /* Gaya tambahan sesuai kebutuhan Anda */
-    .content-wrapper {
-        margin: 10px;
-    }
-
     .card {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     }
-
     .card-header {
-        background-color: #f8f9fa;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
+        border-radius: 10px 10px 0 0;
     }
-
-    .card-body {
-        padding: 30px;
+    .form-control, .form-select {
+        border-radius: 5px;
+    }
+    .btn {
+        border-radius: 5px;
     }
 </style>
-
-@endsection
+@endpush

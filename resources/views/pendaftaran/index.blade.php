@@ -5,21 +5,7 @@
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
-            @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                <strong>Success!</strong> {{ session('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @elseif (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                <strong>Error!</strong> {{ session('error') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
+            @include('layout.alert')
         </div>
 
         <div class="container-fluid">
@@ -30,13 +16,13 @@
                             <h1><b>DATA PENDAFTARAN CALON SISWA</b></h1>
                         </div>
                         <div class="col-sm-6 mb-2 mb-sm-0 text-right">
-                            <a href="/pendaftaran/form" class="btn btn-primary">Tambah Data</a>
+                            <a href="/admin/pendaftaran/form" class="btn btn-primary">Tambah Data</a>
                         </div>
                     </div>
                 </div>
 
                 <div class="card-header">
-                    <form action="/pendaftaran" method="get" class="form-inline">
+                    <form action="/admin/pendaftaran" method="get" class="form-inline">
                         <div class="input-group input-group-sm w-100">
                             <input type="text" name="search" class="form-control" placeholder="Cari Data ....">
                             <div class="input-group-append">
