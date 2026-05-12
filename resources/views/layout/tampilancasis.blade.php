@@ -76,7 +76,7 @@
                 <span>Pendaftaran</span>
             </a>
 
-            <a href="{{ route('informasipembayaran') }}" class="sidebar-nav-item {{ Request::routeIs('informasipembayaran') || Request::routeIs('pembayaran') ? 'active' : '' }}">
+            <a href="{{ route('pembayaran') }}" class="sidebar-nav-item {{ Request::routeIs('pembayaran') ? 'active' : '' }}">
                 <i class="fas fa-credit-card w-4 text-center"></i>
                 <span>Pembayaran</span>
             </a>

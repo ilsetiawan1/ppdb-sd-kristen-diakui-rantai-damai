@@ -331,26 +331,51 @@
                                     </div>
                                 </div>
                                 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="flex flex-col gap-4">
                                     {{-- Password --}}
-                                    <div>
-                                        <label for="newPassword" class="block text-sm font-semibold text-slate-700 mb-1.5">Password</label>
-                                        <div class="relative" x-data="{ show: false }">
+                                    <div x-data="{
+                                        show: false,
+                                        pw: '',
+                                        get strength() {
+                                            if (this.pw.length === 0) return 0;
+                                            if (this.pw.length < 8) return 1;
+                                            let s = 1;
+                                            if (this.pw.length >= 8) s++;
+                                            if (this.pw.match(/[A-Z]/) && this.pw.match(/[0-9]/)) s++;
+                                            return s;
+                                        }
+                                    }">
+                                        <label for="newPassword" class="block text-sm font-semibold text-slate-700 mb-1.5">Password <span class="text-red-500">*</span></label>
+                                        <div class="relative">
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                                 <i class="fas fa-lock text-sm"></i>
                                             </div>
-                                            <input :type="show ? 'text' : 'password'" name="password" id="newPassword" 
+                                            <input :type="show ? 'text' : 'password'" name="password" id="newPassword" x-model="pw"
                                                    class="pl-9 pr-9 w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all text-sm font-medium" 
                                                    placeholder="Min. 8 karakter" required minlength="8">
                                             <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-amber-500 focus:outline-none">
                                                 <i class="fas text-sm" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i>
                                             </button>
                                         </div>
+                                        {{-- Strength Bar --}}
+                                        <div class="mt-2 space-y-1.5" x-show="pw.length > 0">
+                                            <div class="flex gap-1 h-1">
+                                                <div class="flex-1 rounded-full transition-colors duration-300" :class="strength >= 1 ? (strength === 1 ? 'bg-red-500' : (strength === 2 ? 'bg-amber-500' : 'bg-green-500')) : 'bg-slate-200'"></div>
+                                                <div class="flex-1 rounded-full transition-colors duration-300" :class="strength >= 2 ? (strength === 2 ? 'bg-amber-500' : 'bg-green-500') : 'bg-slate-200'"></div>
+                                                <div class="flex-1 rounded-full transition-colors duration-300" :class="strength >= 3 ? 'bg-green-500' : 'bg-slate-200'"></div>
+                                            </div>
+                                            <div class="flex justify-between text-xs">
+                                                <span class="text-slate-400" x-text="pw.length + ' / 8 min karakter'"></span>
+                                                <span class="font-semibold"
+                                                    :class="{ 'text-red-500': strength===1, 'text-amber-500': strength===2, 'text-green-600': strength===3 }"
+                                                    x-text="strength===1 ? 'Lemah' : (strength===2 ? 'Sedang' : 'Kuat')"></span>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     {{-- Konfirmasi Password --}}
                                     <div>
-                                        <label for="confirmPassword" class="block text-sm font-semibold text-slate-700 mb-1.5">Ulangi Password</label>
+                                        <label for="confirmPassword" class="block text-sm font-semibold text-slate-700 mb-1.5">Ulangi Password <span class="text-red-500">*</span></label>
                                         <div class="relative" x-data="{ show: false }">
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                                 <i class="fas fa-check-circle text-sm"></i>
@@ -358,6 +383,9 @@
                                             <input :type="show ? 'text' : 'password'" name="password_confirmation" id="confirmPassword" 
                                                    class="pl-9 pr-9 w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 transition-all text-sm font-medium" 
                                                    placeholder="Ulangi password" required>
+                                            <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-amber-500 focus:outline-none">
+                                                <i class="fas text-sm" :class="show ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
