@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Aug 14, 2024 at 07:01 PM
--- Server version: 8.0.30
--- PHP Version: 8.2.8
+-- Host: 127.0.0.1
+-- Generation Time: May 12, 2026 at 10:27 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,14 +28,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `biaya_daftar_ulang` (
-  `id` int NOT NULL,
-  `nama_biaya` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nominal` int NOT NULL,
-  `tahun_ajaran` varchar(9) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `jenis_kelamin` enum('Laki-Laki','Perempuan','Semua') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Semua',
-  `is_active` tinyint(1) NOT NULL DEFAULT '1',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `id` int(11) NOT NULL,
+  `nama_biaya` varchar(100) NOT NULL,
+  `nominal` int(11) NOT NULL,
+  `tahun_ajaran` varchar(9) NOT NULL,
+  `jenis_kelamin` enum('Laki-Laki','Perempuan','Semua') NOT NULL DEFAULT 'Semua',
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -55,10 +55,10 @@ INSERT INTO `biaya_daftar_ulang` (`id`, `nama_biaya`, `nominal`, `tahun_ajaran`,
 --
 
 CREATE TABLE `foto` (
-  `id_foto` int NOT NULL,
-  `foto` varchar(225) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` enum('Mulai','Berakhir') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id_foto` int(11) NOT NULL,
+  `foto` varchar(225) DEFAULT NULL,
+  `status` enum('Mulai','Berakhir') DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -83,9 +83,9 @@ INSERT INTO `foto` (`id_foto`, `foto`, `status`, `created_at`, `updated_at`) VAL
 --
 
 CREATE TABLE `migrations` (
-  `id` int UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int NOT NULL
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(255) NOT NULL,
+  `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -107,15 +107,15 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `tahun_ajar` (
-  `id_ajar` int NOT NULL,
-  `tahun_ajar` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_ajar` int(11) NOT NULL,
+  `tahun_ajar` varchar(50) DEFAULT NULL,
   `mulai_pendaftaran` date DEFAULT NULL,
   `batas_pendaftaran` date DEFAULT NULL,
   `tgl_seleksi` date DEFAULT NULL,
-  `status` enum('Berlangsung','Berakhir','Belum Dimulai') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `kuota` int DEFAULT '0',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `status` enum('Berlangsung','Berakhir','Belum Dimulai') DEFAULT NULL,
+  `kuota` int(11) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -134,24 +134,24 @@ INSERT INTO `tahun_ajar` (`id_ajar`, `tahun_ajar`, `mulai_pendaftaran`, `batas_p
 --
 
 CREATE TABLE `tb_casis` (
-  `id_casis` int NOT NULL,
-  `user_id` bigint UNSIGNED DEFAULT NULL,
-  `nama` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `nik` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tempat_lahir` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_casis` int(11) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `nama` varchar(50) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `nik` varchar(16) NOT NULL,
+  `tempat_lahir` varchar(20) DEFAULT NULL,
   `tanggal_lahir` date DEFAULT NULL,
-  `alamat` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jenis_kelamin` enum('Laki-Laki','Perempuan') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jml_saudara` int DEFAULT NULL,
-  `nama_ortu` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tempat_lahir_ortu` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alamat` varchar(50) DEFAULT NULL,
+  `jenis_kelamin` enum('Laki-Laki','Perempuan') DEFAULT NULL,
+  `jml_saudara` int(11) DEFAULT NULL,
+  `nama_ortu` varchar(50) DEFAULT NULL,
+  `tempat_lahir_ortu` varchar(20) DEFAULT NULL,
   `tanggal_lahir_ortu` date DEFAULT NULL,
-  `no_hp` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pendidikan_ortu` enum('Tidak Bersekolah','SD','SMP','SMA','S1','S2','S3') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pekerjaan_ortu` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `gaji_ortu` int DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `no_hp` varchar(20) DEFAULT NULL,
+  `pendidikan_ortu` enum('Tidak Bersekolah','SD','SMP','SMA','S1','S2','S3') DEFAULT NULL,
+  `pekerjaan_ortu` varchar(20) DEFAULT NULL,
+  `gaji_ortu` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -169,18 +169,18 @@ INSERT INTO `tb_casis` (`id_casis`, `user_id`, `nama`, `email`, `nik`, `tempat_l
 --
 
 CREATE TABLE `tb_daftar_ulang` (
-  `id_daftar_ulang` int NOT NULL,
-  `pendaftaran_id` int DEFAULT NULL,
-  `tahun_ajaran` varchar(9) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_daftar_ulang` int(11) NOT NULL,
+  `pendaftaran_id` int(11) DEFAULT NULL,
+  `tahun_ajaran` varchar(9) NOT NULL,
   `tgl_daftar_ulang` date NOT NULL,
-  `total_biaya` int NOT NULL,
-  `metode_pembayaran` enum('Cicilan','Lunas') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `jumlah_bayar` int NOT NULL,
-  `status_bayar` enum('Berhasil','Menunggu Konfirmasi','Gagal') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bukti_pembayaran` varchar(225) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `keterangan` text COLLATE utf8mb4_unicode_ci,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `total_biaya` int(11) NOT NULL,
+  `metode_pembayaran` enum('Cicilan','Lunas') NOT NULL,
+  `jumlah_bayar` int(11) NOT NULL,
+  `status_bayar` enum('Berhasil','Menunggu Konfirmasi','Gagal') NOT NULL,
+  `bukti_pembayaran` varchar(225) NOT NULL,
+  `keterangan` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -197,12 +197,12 @@ INSERT INTO `tb_daftar_ulang` (`id_daftar_ulang`, `pendaftaran_id`, `tahun_ajara
 --
 
 CREATE TABLE `tb_panitia` (
-  `id_panitia` int NOT NULL,
-  `user_id` bigint UNSIGNED DEFAULT NULL,
-  `nama` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jenis_kelamin` enum('Laki-Laki','Perempuan') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` enum('Aktif','Non Aktif') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id_panitia` int(11) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `nama` varchar(50) DEFAULT NULL,
+  `jenis_kelamin` enum('Laki-Laki','Perempuan') DEFAULT NULL,
+  `status` enum('Aktif','Non Aktif') DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -211,7 +211,9 @@ CREATE TABLE `tb_panitia` (
 --
 
 INSERT INTO `tb_panitia` (`id_panitia`, `user_id`, `nama`, `jenis_kelamin`, `status`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Panitia Seleksi', 'Perempuan', 'Aktif', '2024-07-02 11:19:19', '14:56:19');
+(1, 2, 'Panitia Seleksi', 'Perempuan', 'Aktif', '2024-07-02 11:19:19', '14:56:19'),
+(6, 53, 'Panitia 1', 'Laki-Laki', 'Aktif', '2026-05-11 20:15:21', NULL),
+(7, 54, 'panitia dua', 'Laki-Laki', 'Aktif', '2026-05-11 14:19:25', '21:19:25');
 
 -- --------------------------------------------------------
 
@@ -220,13 +222,13 @@ INSERT INTO `tb_panitia` (`id_panitia`, `user_id`, `nama`, `jenis_kelamin`, `sta
 --
 
 CREATE TABLE `tb_pembayaran` (
-  `id_pembayaran` int NOT NULL,
-  `casis_id` int DEFAULT NULL,
+  `id_pembayaran` int(11) NOT NULL,
+  `casis_id` int(11) DEFAULT NULL,
   `tgl_pembayaran` date DEFAULT NULL,
-  `jumlah_pembayaran` int DEFAULT NULL,
-  `status_pembayaran` enum('Lunas','Belum Lunas') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `bukti_pembayaran` varchar(225) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `jumlah_pembayaran` int(11) DEFAULT NULL,
+  `status_pembayaran` enum('Lunas','Belum Lunas') DEFAULT NULL,
+  `bukti_pembayaran` varchar(225) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -244,17 +246,17 @@ INSERT INTO `tb_pembayaran` (`id_pembayaran`, `casis_id`, `tgl_pembayaran`, `jum
 --
 
 CREATE TABLE `tb_pendaftaran` (
-  `id_pendaftaran` int NOT NULL,
-  `casis_id` int DEFAULT NULL,
-  `ajar_id` int DEFAULT NULL,
+  `id_pendaftaran` int(11) NOT NULL,
+  `casis_id` int(11) DEFAULT NULL,
+  `ajar_id` int(11) DEFAULT NULL,
   `tgl_pendaftaran` date DEFAULT NULL,
-  `status` enum('Berhasil','Pending','Gagal') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `akte` varchar(225) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `kk` varchar(225) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `foto` varchar(225) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` enum('Berhasil','Pending','Gagal') DEFAULT NULL,
+  `akte` varchar(225) DEFAULT NULL,
+  `kk` varchar(225) DEFAULT NULL,
+  `foto` varchar(225) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` time DEFAULT NULL,
-  `status_daftar_ulang` enum('Belum','Sudah') COLLATE utf8mb4_unicode_ci DEFAULT 'Belum'
+  `status_daftar_ulang` enum('Belum','Sudah') DEFAULT 'Belum'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -271,20 +273,20 @@ INSERT INTO `tb_pendaftaran` (`id_pendaftaran`, `casis_id`, `ajar_id`, `tgl_pend
 --
 
 CREATE TABLE `tb_seleksi` (
-  `id_seleksi` int NOT NULL,
-  `pendaftaran_id` int DEFAULT NULL,
-  `casis_id` int DEFAULT NULL,
+  `id_seleksi` int(11) NOT NULL,
+  `pendaftaran_id` int(11) DEFAULT NULL,
+  `casis_id` int(11) DEFAULT NULL,
   `tgl_seleksi` date DEFAULT NULL,
-  `nilai_baca` int DEFAULT NULL,
-  `nilai_tulis` int DEFAULT NULL,
-  `nilai_hitung` int DEFAULT NULL,
-  `nilai_ngaji` int DEFAULT NULL,
-  `nilai_wawancara` int DEFAULT NULL,
-  `total_nilai` int DEFAULT NULL,
-  `nilai_akhir` int DEFAULT NULL,
-  `hasil_seleksi` enum('Lolos','Tidak Lolos') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` enum('Berhasil','Pending') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `nilai_baca` int(11) DEFAULT NULL,
+  `nilai_tulis` int(11) DEFAULT NULL,
+  `nilai_hitung` int(11) DEFAULT NULL,
+  `nilai_ngaji` int(11) DEFAULT NULL,
+  `nilai_wawancara` int(11) DEFAULT NULL,
+  `total_nilai` int(11) DEFAULT NULL,
+  `nilai_akhir` int(11) DEFAULT NULL,
+  `hasil_seleksi` enum('Lolos','Tidak Lolos') DEFAULT NULL,
+  `status` enum('Berhasil','Pending') DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -302,13 +304,13 @@ INSERT INTO `tb_seleksi` (`id_seleksi`, `pendaftaran_id`, `casis_id`, `tgl_selek
 --
 
 CREATE TABLE `users` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` enum('Calon Siswa','Admin','Kepala Sekolah','Panitia') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('Calon Siswa','Admin','Kepala Sekolah','Panitia') DEFAULT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -324,7 +326,11 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `ro
 (45, 'madang', 'madang@gmail.com', NULL, '$2y$10$Rdtgx80FoPXbMJ/bq9xxQOcgbUTGF55jkrFbXHqGVtAMBOWo4a39i', 'Calon Siswa', NULL, '2024-07-28 07:58:40', '2024-07-28 07:58:40'),
 (46, 'hamid', 'hamid@gmail.com', NULL, '$2y$10$CFM4a8NwkWbNqBGDHLFhmOFfxMyEYaIPyMJPuEDtIMyyoYjsAnnJK', 'Calon Siswa', NULL, '2024-07-29 23:16:49', '2024-07-29 23:16:49'),
 (50, 'gilang', 'gilang@gmail.com', NULL, '$2y$10$sMXzENFBCIWWlLPUQLlGaulG7XynGmFfcsrxiax8Hvi5Jaz9gHU7.', 'Calon Siswa', NULL, '2024-08-14 08:53:28', '2024-08-14 08:53:28'),
-(51, 'candra', 'candra@gmail.com', NULL, '$2y$10$xgCQdFzJiJdmu0ZihcnTOeSZFZgk5KCqkjFEjFjH2HcDjV4ZWWqmC', 'Calon Siswa', NULL, '2024-08-14 08:53:53', '2024-08-14 08:53:53');
+(51, 'candra', 'candra@gmail.com', NULL, '$2y$10$xgCQdFzJiJdmu0ZihcnTOeSZFZgk5KCqkjFEjFjH2HcDjV4ZWWqmC', 'Calon Siswa', NULL, '2024-08-14 08:53:53', '2024-08-14 08:53:53'),
+(52, 'Admin 1', 'admin1@gmail.com', NULL, '$2y$10$8daz1vhGRgUm9j3JDrplceC50JgnkgETREoeNHZvSWTzVDP9YKJn2', 'Admin', NULL, '2026-05-11 20:15:21', '2026-05-11 14:11:50'),
+(53, 'Panitia 1', 'panitia1@gmail.com', NULL, '$2y$10$KwG31vKvOQbq5iipbsel8u2O4qJrlrptMT.i35Fef2Vfuicah6F9u', 'Panitia', NULL, '2026-05-11 20:15:21', '2026-05-11 14:12:26'),
+(54, 'panitia 2', 'panitia2@gmail.com', NULL, '$2y$10$rFUtH//.EYTpmLOPuuoZUu7u8VazUxjyKxaazOpkiAe98xptJwaRG', 'Panitia', NULL, '2026-05-11 14:19:25', '2026-05-11 14:19:25'),
+(55, 'Muhammad Ilham Setiawan', 'm.ilsetiawan1@gmail.com', NULL, '$2y$10$AtHEasf1UcUIX/pQpdVfgOwECOjoa14fIUVnYY5JEztskYoWjDhV.', 'Calon Siswa', NULL, '2026-05-12 00:56:56', '2026-05-12 00:56:56');
 
 --
 -- Indexes for dumped tables
@@ -359,6 +365,7 @@ ALTER TABLE `tahun_ajar`
 --
 ALTER TABLE `tb_casis`
   ADD PRIMARY KEY (`id_casis`),
+  ADD UNIQUE KEY `uq_nik` (`nik`),
   ADD KEY `id_user` (`user_id`);
 
 --
@@ -413,67 +420,67 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `biaya_daftar_ulang`
 --
 ALTER TABLE `biaya_daftar_ulang`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `foto`
 --
 ALTER TABLE `foto`
-  MODIFY `id_foto` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_foto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tahun_ajar`
 --
 ALTER TABLE `tahun_ajar`
-  MODIFY `id_ajar` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_ajar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tb_casis`
 --
 ALTER TABLE `tb_casis`
-  MODIFY `id_casis` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_casis` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `tb_daftar_ulang`
 --
 ALTER TABLE `tb_daftar_ulang`
-  MODIFY `id_daftar_ulang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_daftar_ulang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tb_panitia`
 --
 ALTER TABLE `tb_panitia`
-  MODIFY `id_panitia` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_panitia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tb_pembayaran`
 --
 ALTER TABLE `tb_pembayaran`
-  MODIFY `id_pembayaran` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `tb_pendaftaran`
 --
 ALTER TABLE `tb_pendaftaran`
-  MODIFY `id_pendaftaran` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id_pendaftaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `tb_seleksi`
 --
 ALTER TABLE `tb_seleksi`
-  MODIFY `id_seleksi` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_seleksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- Constraints for dumped tables
