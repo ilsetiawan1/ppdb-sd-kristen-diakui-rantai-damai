@@ -134,7 +134,7 @@ class casisController extends Controller
 
             // Validasi input
             $validatedData = $request->validate([
-                'nik' => 'required|string|max:10',
+                'nik' => 'required|string|max:16',
                 'nama' => 'required|string|max:255',
                 'tempat_lahir' => 'required|string|max:255',
                 'tanggal_lahir' => 'required|date',

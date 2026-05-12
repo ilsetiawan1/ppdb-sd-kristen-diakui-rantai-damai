@@ -68,17 +68,31 @@
                 <h3 class="font-bold text-slate-800">Biodata Calon Siswa</h3>
             </div>
             <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label for="nik" class="block text-sm font-semibold text-slate-700 mb-2">NIK (Nomor Induk Kependudukan) <span class="text-red-500">*</span></label>
-                    <input type="text" name="nik" id="nik" value="{{ old('nik', $user->casis ? $user->casis->nik : '') }}" 
-                           class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-slate-900 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all @error('nik') ring-red-500/10 focus:border-red-500 @enderror" 
-                           placeholder="10 digit NIK" oninput="validateNIK(this)" maxlength="10" required>
-                    <small id="nikError" class="text-red-500 mt-1 block font-medium"></small>
+                <div x-data="{ nikVal: '{{ old('nik', $user->casis ? $user->casis->nik : '') }}' }">
+                    <div class="flex items-center justify-between mb-2">
+                        <label for="nik" class="text-sm font-semibold text-slate-700">NIK (Nomor Induk Kependudukan) <span class="text-red-500">*</span></label>
+                        @if(!($user->casis && $user->casis->nik))
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 border border-orange-200"><i class="fas fa-exclamation-circle mr-1"></i>Belum diisi</span>
+                        @endif
+                    </div>
+                    <input type="text" name="nik" id="nik" x-model="nikVal"
+                           value="{{ old('nik', $user->casis ? $user->casis->nik : '') }}" 
+                           class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-slate-900 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all @error('nik') border-red-400 @enderror" 
+                           placeholder="Masukkan 16 digit NIK" oninput="validateNIK(this)" maxlength="16" required>
+                    <div class="flex justify-between items-center mt-1">
+                        <small id="nikError" class="text-red-500 font-medium"></small>
+                        <span class="text-xs text-slate-400" x-text="nikVal.length + ' / 16'">0 / 16</span>
+                    </div>
                     @error('nik') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
-                    <label for="nama" class="block text-sm font-semibold text-slate-700 mb-2">Nama Lengkap Casis <span class="text-red-500">*</span></label>
+                    <div class="flex items-center justify-between mb-2">
+                        <label for="nama" class="text-sm font-semibold text-slate-700">Nama Lengkap Casis <span class="text-red-500">*</span></label>
+                        @if(!($user->casis && $user->casis->nama))
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 border border-orange-200"><i class="fas fa-exclamation-circle mr-1"></i>Belum diisi</span>
+                        @endif
+                    </div>
                     <input type="text" name="nama" id="nama" value="{{ old('nama', $user->casis ? $user->casis->nama : '') }}" 
                            class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-slate-900 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all" 
                            placeholder="Sesuai Akta Kelahiran" required>
@@ -86,7 +100,12 @@
                 </div>
 
                 <div>
-                    <label for="tempat_lahir" class="block text-sm font-semibold text-slate-700 mb-2">Tempat Lahir <span class="text-red-500">*</span></label>
+                    <div class="flex items-center justify-between mb-2">
+                        <label for="tempat_lahir" class="text-sm font-semibold text-slate-700">Tempat Lahir <span class="text-red-500">*</span></label>
+                        @if(!($user->casis && $user->casis->tempat_lahir))
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 border border-orange-200"><i class="fas fa-exclamation-circle mr-1"></i>Belum diisi</span>
+                        @endif
+                    </div>
                     <input type="text" name="tempat_lahir" id="tempat_lahir" value="{{ old('tempat_lahir', $user->casis ? $user->casis->tempat_lahir : '') }}" 
                            class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-slate-900 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all" 
                            placeholder="Contoh: Klaten" required>
@@ -94,7 +113,12 @@
                 </div>
 
                 <div>
-                    <label for="tanggal_lahir" class="block text-sm font-semibold text-slate-700 mb-2">Tanggal Lahir <span class="text-red-500">*</span></label>
+                    <div class="flex items-center justify-between mb-2">
+                        <label for="tanggal_lahir" class="text-sm font-semibold text-slate-700">Tanggal Lahir <span class="text-red-500">*</span></label>
+                        @if(!($user->casis && $user->casis->tanggal_lahir))
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 border border-orange-200"><i class="fas fa-exclamation-circle mr-1"></i>Belum diisi</span>
+                        @endif
+                    </div>
                     <input type="date" name="tanggal_lahir" id="tanggal_lahir" value="{{ old('tanggal_lahir', $user->casis ? $user->casis->tanggal_lahir : '') }}" 
                            class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-slate-900 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all" required>
                     @error('tanggal_lahir') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
@@ -259,9 +283,9 @@
     function validateNIK(input) {
         input.value = input.value.replace(/\D/g, '');
         var nikError = document.getElementById('nikError');
-        if (input.value.length !== 10) {
-            nikError.textContent = 'NIK harus terdiri dari 10 digit angka.';
-            input.setCustomValidity('NIK harus terdiri dari 10 digit.');
+        if (input.value.length !== 16) {
+            nikError.textContent = 'NIK harus terdiri dari 16 digit angka.';
+            input.setCustomValidity('NIK harus terdiri dari 16 digit.');
         } else {
             nikError.textContent = '';
             input.setCustomValidity('');
@@ -283,7 +307,9 @@
     }
 
     document.querySelector('form').addEventListener('submit', function(event) {
-        validateNIK(document.getElementById('nik'));
+        const nikEl = document.getElementById('nik');
+        if (nikEl.value.length !== 16) { nikEl.setCustomValidity('NIK harus 16 digit.'); }
+        validateNIK(nikEl);
         validateNoHP();
         if (!this.checkValidity()) {
             event.preventDefault();
