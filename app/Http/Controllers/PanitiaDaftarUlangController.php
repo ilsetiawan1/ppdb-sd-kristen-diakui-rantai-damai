@@ -54,10 +54,8 @@ class PanitiaDaftarUlangController extends Controller
             $daftarUlang->pendaftaran->save();
         }
 
-
-        return redirect()->route('panitia.daftar_ulang.index')->with('success', 'Status daftar ulang berhasil diupdate.');
+        return redirect()->route('admin.daftar_ulang.index')->with('success', 'Status daftar ulang berhasil diupdate.');
     }
-
 
     public function laporanDaftarUlang(Request $request)
     {
