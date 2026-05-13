@@ -9,10 +9,9 @@ class ProfilController extends Controller
 {
     public function admin()
     {
-        // Ambil data user yang memiliki role 'admin'
-        $data = User::where('role', 'admin')->get();
+        $user = auth()->user();
 
-        return view('profil.admin', compact('data'));
+        return view('profil.admin', compact('user'));
     }
 
     public function panitia()

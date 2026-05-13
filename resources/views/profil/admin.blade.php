@@ -1,74 +1,147 @@
 @extends('layout.tampilan')
 
 @section('content')
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="card mb-4">
-                                <div class="card-body text-center">
-                                    <img src="{{ asset('template/dist/img/user0-128x128.jpg') }}" alt="avatar" class="img-fluid" style="width: 250px;">
-                                    <h5 class="my-3"></h5>
+<div class="min-h-screen bg-slate-50 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                                    <div class="mb-4 mb-lg-0">
+        {{-- Header --}}
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-slate-800">
+                Profil Admin
+            </h1>
 
-                                    </div>
-                                </div>
+            <p class="text-slate-500 mt-1">
+                Informasi akun administrator sistem PPDB.
+            </p>
+        </div>
+
+
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            {{-- Sidebar --}}
+            <div class="lg:col-span-1">
+
+                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+
+                    {{-- Cover --}}
+                    <div class="h-28 bg-gradient-to-r from-blue-600 to-indigo-500"></div>
+
+                    <div class="px-6 pb-6 relative">
+
+                        {{-- Avatar --}}
+                        <div class="flex justify-center">
+                            <div class="-mt-16">
+                                <img src="{{ asset('template/dist/img/user0-128x128.jpg') }}"
+                                    alt="avatar"
+                                    class="w-32 h-32 rounded-full border-4 border-white shadow-md object-cover">
                             </div>
-                            <div class="card mb-4 mb-lg-0">
-                                <div class="card-body p-0">
+                        </div>
+
+                        {{-- Name --}}
+                        <div class="text-center mt-4">
+                            <h2 class="text-xl font-bold text-slate-800">
+                                {{ $user->name }}
+                            </h2>
+
+                            <p class="text-sm text-slate-500 mt-1">
+                                Administrator Sistem
+                            </p>
+                        </div>
+
+                        {{-- Role Card --}}
+                        <div class="mt-6">
+                            <div class="bg-blue-50 border border-blue-100 rounded-xl p-4">
+                                <div class="flex items-center gap-3">
+
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                        <i class="fas fa-user-shield text-blue-600"></i>
+                                    </div>
+
+                                    <div>
+                                        <p class="text-sm text-slate-500">
+                                            Hak Akses
+                                        </p>
+
+                                        <p class="font-semibold text-blue-700">
+                                            {{ $user->role }}
+                                        </p>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-lg-8">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <h5 class="card-title">Biodata</h5>
-                                    <hr>
-
-                                    @foreach($data as $user)
-                                    <hr>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-3">
-                                            <p class="mb-0">Nama</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p class="text-muted mb-0">{{ $user->name }}</p>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-3">
-                                            <p class="mb-0">Role</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p class="text-muted mb-0">{{ $user->role }}</p>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-3">
-                                            <p class="mb-0">Email</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p class="text-muted mb-0">{{ $user->email }}</p>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    @endforeach
-
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
+
             </div>
+
+            {{-- Detail --}}
+            <div class="lg:col-span-2">
+
+                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+
+                    {{-- Header --}}
+                    <div class="px-6 py-5 border-b border-slate-100">
+                        <h3 class="text-lg font-bold text-slate-800">
+                            Biodata Admin
+                        </h3>
+
+                        <p class="text-sm text-slate-500 mt-1">
+                            Detail informasi akun administrator.
+                        </p>
+                    </div>
+
+                    {{-- Body --}}
+                    <div class="p-6">
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                            {{-- Nama --}}
+                            <div>
+                                <label class="text-sm font-semibold text-slate-500">
+                                    Nama Lengkap
+                                </label>
+
+                                <div class="mt-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 font-medium">
+                                    {{ $user->name }}
+                                </div>
+                            </div>
+
+                            {{-- Role --}}
+                            <div>
+                                <label class="text-sm font-semibold text-slate-500">
+                                    Role
+                                </label>
+
+                                <div class="mt-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 font-medium">
+                                    {{ $user->role }}
+                                </div>
+                            </div>
+
+                            {{-- Email --}}
+                            <div class="md:col-span-2">
+                                <label class="text-sm font-semibold text-slate-500">
+                                    Email
+                                </label>
+
+                                <div class="mt-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 font-medium break-all">
+                                    {{ $user->email }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
+
+
     </div>
 </div>
 @endsection
