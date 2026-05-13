@@ -20,7 +20,26 @@
 
     @include('layout.alert')
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    @if(!isset($status_pendaftaran) || $status_pendaftaran !== 'Berhasil')
+        <div class="bg-amber-50 border-l-4 border-amber-500 p-6 sm:p-8 rounded-r-2xl shadow-sm mb-6 flex flex-col sm:flex-row gap-5 items-start">
+            <div class="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0">
+                <i class="fas fa-exclamation-triangle text-2xl"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-amber-800 mb-2">Pembayaran Belum Tersedia</h3>
+                <p class="text-amber-700 text-base mb-4 leading-relaxed">
+                    Pembayaran biaya pendaftaran baru dapat dilakukan setelah berkas pendaftaran Anda diverifikasi oleh pihak sekolah. 
+                    Silahkan melengkapi formulir pendaftaran Anda atau menunggu verifikasi dari Admin. Terima kasih.
+                </p>
+                <div class="flex gap-3">
+                    <a href="{{ route('berandacasis') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-green-500 font-semibold rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
+                        <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+                    </a>
+                </div>
+            </div>
+        </div>
+    @else
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {{-- Kolom Kiri: Info dan Panduan --}}
         <div class="lg:col-span-1 space-y-6">
             {{-- Info Bank --}}
@@ -171,6 +190,6 @@
                 </form>
             </div>
         </div>
-    </div>
+    @endif
 </div>
 @endsection

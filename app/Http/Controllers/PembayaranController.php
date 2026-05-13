@@ -67,15 +67,21 @@ class PembayaranController extends Controller
         // Dapatkan user yang saat ini sedang login
         $user = Auth::user();
 
-        // Muat data casis yang terkait dengan user
-        $casis = Casis::where('user_id', $user->id)->first();
+        // Muat data casis dan pendaftaran yang terkait dengan user
+        $casis = Casis::with('pendaftaran')->where('user_id', $user->id)->first();
 
-        // Inisialisasi status pembayaran dengan "Belum Lunas"
+        // Inisialisasi status default
         $status_pembayaran = 'Belum Lunas';
         $bukti_pembayaran = null;
+        $status_pendaftaran = 'Pending';
 
         // Jika casis dengan user terkait ditemukan
         if ($casis) {
+            // Cek status pendaftaran
+            if ($casis->pendaftaran) {
+                $status_pendaftaran = $casis->pendaftaran->status;
+            }
+
             // Dapatkan data pembayaran terkait dengan casis
             $pembayaran = Pembayaran::where('casis_id', $casis->id_casis)->first();
 
@@ -86,7 +92,7 @@ class PembayaranController extends Controller
             }
         }
 
-        return view('pembayaran.bayar', compact('user', 'status_pembayaran', 'bukti_pembayaran'));
+        return view('pembayaran.bayar', compact('user', 'status_pembayaran', 'bukti_pembayaran', 'status_pendaftaran'));
     }
 
     public function pelunasan(Request $request)
