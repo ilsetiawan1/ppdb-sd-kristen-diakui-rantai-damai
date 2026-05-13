@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:Panitia'])->group(function () {
         Route::get('/beranda/panitia', [BerandaController::class, 'berandapanitia'])->name('berandapanitia');
         Route::get('/beranda/profil panitia', [ProfilController::class, 'panitia'])->name('panitia');
-        Route::get('/panitia/form nilai', [PanitiaController::class, 'nilai'])->name('nilai');
+        Route::get('/panitia/evaluasi-seleksi', [PanitiaController::class, 'nilai'])->name('nilai');
         Route::get('/panitia/input_nilai/{id}', [PanitiaController::class, 'input'])->name('input');
         Route::post('/panitia/simpan/{id}', [PanitiaController::class, 'simpan'])->name('simpan');
         Route::delete('/panitia/hapus/{id}', [PanitiaController::class, 'hapus'])->name('hapus');
@@ -71,13 +71,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('laporan pembayaran', [LaporanController::class, 'unduhpembayaran'])->name('unduhpembayaran');
         });
 
-        Route::prefix('panitia')->group(function () {
-            Route::get('/daftar-ulang', [PanitiaDaftarUlangController::class, 'index'])->name('panitia.daftar_ulang.index');
-            Route::get('/daftar-ulang/{id}', [PanitiaDaftarUlangController::class, 'show'])->name('panitia.daftar_ulang.show');
-            Route::put('/daftar-ulang/{id}', [PanitiaDaftarUlangController::class, 'update'])->name('panitia.daftar_ulang.update');
-        });
-        Route::get('/laporan/daftar-ulang', [PanitiaDaftarUlangController::class, 'laporanDaftarUlang'])->name('laporan.daftar-ulang.index');
-        Route::get('/laporan/daftar-ulang/cetak', [PanitiaDaftarUlangController::class, 'cetak'])->name('laporan.daftar-ulang.cetak');
+        // Removed daftar-ulang routes from panitia
     });
 
     // Admin routes
@@ -151,6 +145,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('edit/{id}', [PengaturanController::class, 'edit'])->name('tahun.edit');
             Route::post('update/{id}', [PengaturanController::class, 'update'])->name('tahun.update');
             Route::delete('delete/{id}', [PengaturanController::class, 'delete'])->name('tahun.delete');
+        });
+
+        Route::prefix('verifikasi-daftar-ulang')->group(function () {
+            Route::get('/', [PanitiaDaftarUlangController::class, 'index'])->name('admin.daftar_ulang.index');
+            Route::get('/{id}', [PanitiaDaftarUlangController::class, 'show'])->name('admin.daftar_ulang.show');
+            Route::put('/{id}', [PanitiaDaftarUlangController::class, 'update'])->name('admin.daftar_ulang.update');
         });
 
         Route::prefix('biaya-daftar-ulang')->group(function () {
