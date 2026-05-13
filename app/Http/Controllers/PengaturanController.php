@@ -156,19 +156,18 @@ class PengaturanController extends Controller
             ->where('tb_pendaftaran.ajar_id', '=', $tahunAjarId)
             ->where('tb_casis.nama', 'LIKE', '%' . $search . '%')
             ->select(
-                'tb_casis.id_casis',
-                'tb_casis.nama',
-                'tb_seleksi.id_seleksi',
-                'tb_seleksi.nilai_baca',
-                'tb_seleksi.nilai_tulis',
-                'tb_seleksi.nilai_hitung',
-                'tb_seleksi.nilai_ngaji',
-                'tb_seleksi.nilai_wawancara',
-                'tb_seleksi.total_nilai',
-                'tb_seleksi.nilai_akhir',
-                'tb_seleksi.hasil_seleksi',
-                'tb_seleksi.status as status_seleksi'
-            )
+                    'tb_casis.id_casis',
+                    'tb_casis.nama',
+                    'tb_seleksi.id_seleksi',
+                    'tb_seleksi.nilai_baca',
+                    'tb_seleksi.nilai_tulis',
+                    'tb_seleksi.nilai_hitung',
+                    'tb_seleksi.nilai_wawancara',
+                    'tb_seleksi.total_nilai',
+                    'tb_seleksi.nilai_akhir',
+                    'tb_seleksi.hasil_seleksi',
+                    'tb_seleksi.status as status_seleksi'
+                )
             ->get();
 
         return view('pengaturan.pengumuman', compact('data'));
