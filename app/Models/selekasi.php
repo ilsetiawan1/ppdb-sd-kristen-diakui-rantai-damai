@@ -10,8 +10,19 @@ class selekasi extends Model
     use HasFactory;
 
     protected $table = 'tb_seleksi';
-    protected $fillable = ['id_seleksi', 'casis_id', 'pendaftaran_id', 'tgl_seleksi','nilai_baca','nilai_tulis',
-                            'nilai_hitung','nilai_ngaji','nilai_wawancara','total_nilai','nilai_akhir','hasil_seleksi'];
+    protected $fillable = [
+    'id_seleksi',
+    'casis_id',
+    'pendaftaran_id',
+    'tgl_seleksi',
+    'nilai_baca',
+    'nilai_tulis',
+    'nilai_hitung',
+    'nilai_wawancara',
+    'total_nilai',
+    'nilai_akhir',
+    'hasil_seleksi'
+];
     protected $primaryKey = 'id_seleksi';
 
     public function casis()

@@ -117,6 +117,7 @@ class PanitiaController extends Controller
             ->leftJoin('tb_pembayaran', 'tb_casis.id_casis', '=', 'tb_pembayaran.casis_id')
             ->leftJoin('tb_pendaftaran', 'tb_casis.id_casis', '=', 'tb_pendaftaran.casis_id')
             ->where('tb_pendaftaran.status', '=', 'Berhasil')
+            ->where('tb_pembayaran.status_pembayaran', '=', 'Lunas') // Hanya muncul jika pembayaran lunas
             ->where('tb_pendaftaran.ajar_id', '=', $tahunAjarId) // Filter berdasarkan tahun ajar
             ->where('tb_casis.nama', 'LIKE', '%' . $search . '%')
             ->select(
@@ -125,7 +126,6 @@ class PanitiaController extends Controller
                 'tb_seleksi.nilai_baca',
                 'tb_seleksi.nilai_tulis',
                 'tb_seleksi.nilai_hitung',
-                'tb_seleksi.nilai_ngaji',
                 'tb_seleksi.nilai_wawancara',
                 'tb_seleksi.total_nilai',
                 'tb_seleksi.nilai_akhir',
@@ -150,7 +150,6 @@ class PanitiaController extends Controller
             'nilai_baca' => 'required|numeric',
             'nilai_tulis' => 'required|numeric',
             'nilai_hitung' => 'required|numeric',
-            'nilai_ngaji' => 'required|numeric',
             'nilai_wawancara' => 'required|numeric',
             'tgl_seleksi' => 'required|date',
         ]);
@@ -159,10 +158,10 @@ class PanitiaController extends Controller
         $casis = Casis::with(['pendaftaran', 'seleksi'])->where('id_casis', $id)->first();
 
         // Hitung total_nilai
-        $total_nilai = $validatedData['nilai_baca'] + $validatedData['nilai_tulis'] + $validatedData['nilai_hitung'] + $validatedData['nilai_ngaji'] + $validatedData['nilai_wawancara'];
+        $total_nilai = $validatedData['nilai_baca'] + $validatedData['nilai_tulis'] + $validatedData['nilai_hitung'] + $validatedData['nilai_wawancara'];
 
         // Hitung nilai_akhir
-        $nilai_akhir = $total_nilai / 5;
+        $nilai_akhir = $total_nilai / 4;
 
         // Tentukan hasil_seleksi
         $hasil_seleksi = $nilai_akhir > 74 ? 'Lolos' : 'Tidak Lolos';
@@ -174,20 +173,18 @@ class PanitiaController extends Controller
         $seleksi = $casis->seleksi->first();
 
         if ($seleksi) {
-            // Perbarui data seleksi yang sudah ada
-            $seleksi->update([
-                'nilai_baca' => $validatedData['nilai_baca'],
-                'nilai_tulis' => $validatedData['nilai_tulis'],
-                'nilai_hitung' => $validatedData['nilai_hitung'],
-                'nilai_ngaji' => $validatedData['nilai_ngaji'],
-                'nilai_wawancara' => $validatedData['nilai_wawancara'],
-                'tgl_seleksi' => $validatedData['tgl_seleksi'],
-                'total_nilai' => $total_nilai,
-                'nilai_akhir' => $nilai_akhir,
-                'hasil_seleksi' => $hasil_seleksi,
-                'pendaftaran_id' => $pendaftaran_id, // Pastikan pendaftaran_id diperbarui
-                'status' => 'Pending', // Menambahkan status Pending
-            ]);
+        $seleksi->update([
+            'nilai_baca' => $validatedData['nilai_baca'],
+            'nilai_tulis' => $validatedData['nilai_tulis'],
+            'nilai_hitung' => $validatedData['nilai_hitung'],
+            'nilai_wawancara' => $validatedData['nilai_wawancara'],
+            'tgl_seleksi' => $validatedData['tgl_seleksi'],
+            'total_nilai' => $total_nilai,
+            'nilai_akhir' => $nilai_akhir,
+            'hasil_seleksi' => $hasil_seleksi,
+            'pendaftaran_id' => $pendaftaran_id,
+            'status' => 'Pending',
+        ]);
         } else {
             // Buat data seleksi baru
             $casis->seleksi()->create([
@@ -196,7 +193,6 @@ class PanitiaController extends Controller
                 'nilai_baca' => $validatedData['nilai_baca'],
                 'nilai_tulis' => $validatedData['nilai_tulis'],
                 'nilai_hitung' => $validatedData['nilai_hitung'],
-                'nilai_ngaji' => $validatedData['nilai_ngaji'],
                 'nilai_wawancara' => $validatedData['nilai_wawancara'],
                 'tgl_seleksi' => $validatedData['tgl_seleksi'],
                 'total_nilai' => $total_nilai,
@@ -220,7 +216,6 @@ class PanitiaController extends Controller
             'nilai_baca' => null,
             'nilai_tulis' => null,
             'nilai_hitung' => null,
-            'nilai_ngaji' => null,
             'nilai_wawancara' => null,
             'total_nilai' => null,
             'nilai_akhir' => null,

@@ -1,100 +1,47 @@
 @extends('layout.tampilanpanitia')
 
+@section('page-title', 'Data Nilai Calon Siswa')
+
 @section('content')
-<div class="content-wrapper">
-    <div class="content-header">
-        <div class="container-fluid">
+<div class="space-y-6">
 
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                <strong>Success!</strong> {{ session('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @elseif (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                <strong>Error!</strong> {{ session('error') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
-            
-            <div class="card">
-                <div class="card-header bg-dark text-white">
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col-sm-6 mb-2 mb-sm-0">
-                            <h1><b>DATA NILAI CALON SISWA</b></h1>
-                        </div>
-                        <form action="/panitia/form nilai" method="get" class="form-inline d-flex justify-content-end">
-                            <div class="input-group input-group-sm">
-                                <input type="text" name="search" class="form-control" placeholder="Cari Nama Calon Siswa" value="{{ request('search') }}">
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+    {{-- Alert --}}
+    @include('components.panitia.alert')
 
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table text-center">
-                            <thead>
-                                <tr>
-                                    <th class="text-center bg-dark text-white" scope="col">No</th>
-                                    <th class="text-center bg-dark text-white" scope="col">Nama Lengkap</th>
-                                    <th class="text-center bg-dark text-white" scope="col">Baca</th>
-                                    <th class="text-center bg-dark text-white" scope="col">Tulis</th>
-                                    <th class="text-center bg-dark text-white" scope="col">Hitung</th>
-                                    <th class="text-center bg-dark text-white" scope="col">Ngaji</th>
-                                    <th class="text-center bg-dark text-white" scope="col">Wawancara</th>
-                                    <th class="text-center bg-dark text-white" scope="col">Total Nilai</th>
-                                    <th class="text-center bg-dark text-white" scope="col">Rata-Rata</th>
-                                    <th class="text-center bg-dark text-white" scope="col">Hasil</th>
-                                    <th class="text-center bg-dark text-white" scope="col">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($data as $no => $value)
-                                <tr>
-                                    <td>{{ $no + 1 }}</td>
-                                    <td>{{ $value->nama }}</td>
-                                    <td>{{ $value->nilai_baca ?? '- - -' }}</td>
-                                    <td>{{ $value->nilai_tulis ?? '- - -' }}</td>
-                                    <td>{{ $value->nilai_hitung ?? '- - -' }}</td>
-                                    <td>{{ $value->nilai_ngaji ?? '- - -' }}</td>
-                                    <td>{{ $value->nilai_wawancara ?? '- - -' }}</td>
-                                    <td>{{ $value->total_nilai ?? '- - -' }}</td>
-                                    <td>{{ $value->nilai_akhir ?? '- - -' }}</td>
-                                    <td style="color: {{ $value->hasil_seleksi == 'Lolos' ? 'green' : 'red' }}">
-                                        <strong>{{ $value->hasil_seleksi == 'Lolos' ? 'LULUS' : 'TIDAK LULUS' }}</strong>
-                                    </td>
-                                    <td>
-                                        <!-- Tombol Edit -->
-                                        <a href="{{ route('input', ['id' => $value->id_casis]) }}" class="btn btn-sm btn-info" title="Tambah">
-                                            <i class="fa fa-plus"></i>
-                                        </a>
-                                        <!-- Tombol Hapus -->
-                                        <form action="{{ route('hapus', ['id' => $value->id_casis]) }}" method="post" style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" title="Hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+    {{-- Header --}}
+    <div
+        class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+
+        <div>
+            <h1 class="text-xl sm:text-2xl font-bold text-slate-800 font-heading">
+                Data Nilai Calon Siswa
+            </h1>
+
+            <p class="text-slate-500 text-sm mt-1">
+                Kelola hasil tes seleksi calon siswa secara terintegrasi.
+            </p>
         </div>
+
+        {{-- Search --}}
+        <form action="/panitia/form nilai" method="get" class="w-full md:w-auto">
+            <div class="relative max-w-sm ml-auto">
+
+                <input type="text"
+                    name="search"
+                    class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:ring-green-500 focus:border-green-500 block pl-10 p-2.5"
+                    placeholder="Cari Nama Calon Siswa..."
+                    value="{{ request('search') }}">
+
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <i class="fas fa-search text-slate-400"></i>
+                </div>
+
+            </div>
+        </form>
     </div>
+
+    {{-- Table --}}
+    @include('components.panitia.table-nilai')
+
 </div>
 @endsection

@@ -71,19 +71,9 @@
                 <span>Dashboard</span>
             </a>
 
-            <a href="/panitia/form nilai" class="sidebar-nav-item {{ Request::is('panitia/form nilai') || Request::is('panitia/input_nilai/*') ? 'active' : '' }}">
+            <a href="/panitia/evaluasi-seleksi" class="sidebar-nav-item {{ Request::is('panitia/evaluasi-seleksi') || Request::is('panitia/input_nilai/*') ? 'active' : '' }}">
                 <i class="fas fa-clipboard-list w-4 text-center"></i>
                 <span>Seleksi Calon Siswa</span>
-            </a>
-
-            <a href="{{ route('panitia.daftar_ulang.index') }}" class="sidebar-nav-item {{ Request::routeIs('panitia.daftar_ulang.*') ? 'active' : '' }}">
-                <i class="fas fa-redo-alt w-4 text-center"></i>
-                <span>Verifikasi Daftar Ulang</span>
-            </a>
-
-            <a href="/laporan/daftar-ulang" class="sidebar-nav-item {{ Request::routeIs('laporan.daftar-ulang.*') ? 'active' : '' }}">
-                <i class="fas fa-file-alt w-4 text-center"></i>
-                <span>Cetak Daftar Ulang</span>
             </a>
 
             {{-- Laporan Group --}}
