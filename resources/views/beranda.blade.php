@@ -5,7 +5,7 @@
 @section('content')
 <div class="space-y-6">
     {{-- Welcome Banner --}}
-    <div class="relative overflow-hidden bg-gradient-to-br from-green-600 to-teal-700 rounded-2xl p-6 sm:p-8 shadow-sm">
+    <div class="relative overflow-hidden bg-linear-to-br from-green-600 to-teal-700 rounded-2xl p-6 sm:p-8 shadow-sm">
         <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
                 <h1 class="text-2xl sm:text-3xl font-bold text-white mb-2 font-heading">

@@ -27,14 +27,29 @@
             </div>
             
             <div class="hidden lg:block relative">
-                <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20 transform rotate-2 hover:rotate-0 transition-transform duration-500">
-                    <div class="aspect-w-4 aspect-h-3 bg-slate-200 flex items-center justify-center">
-                        {{-- Online image as requested for now --}}
-                        <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="SD Kristen Diakui Rantai Damai" class="object-cover w-full h-full">
+                <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20 transform rotate-2 hover:rotate-0 transition-transform duration-500"
+                     x-data="{ 
+                         images: [
+                             '{{ asset('images/hero/slide1.jpeg') }}', 
+                             '{{ asset('images/hero/slide2.jpeg') }}', 
+                             '{{ asset('images/hero/slide3.jpeg') }}'
+                         ], 
+                         currentIndex: 0 
+                     }" 
+                     x-init="setInterval(() => { currentIndex = (currentIndex + 1) % images.length }, 5000)">
+                    
+                    <div style="padding-bottom: 75%;" class="bg-slate-200 relative w-full block">
+                        <template x-for="(image, index) in images" :key="index">
+                            <img :src="image" 
+                                 alt="SD Kristen Diakui Rantai Damai" 
+                                 class="absolute inset-0 object-cover w-full h-full transition-opacity duration-1000 ease-in-out"
+                                 :class="currentIndex === index ? 'opacity-100 z-10' : 'opacity-0 z-0'">
+                        </template>
                     </div>
-                    <div class="absolute inset-0 bg-linear-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute bottom-6 left-6 right-6">
-                        <p class="text-white font-medium text-lg">Pendidikan Karakter Berbasis Nilai Kristiani</p>
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-20 pointer-events-none"></div>
+                    <div class="absolute bottom-6 left-6 right-6 z-30 pointer-events-none">
+                        <p class="text-white font-medium text-lg drop-shadow-md">Pendidikan Karakter Berbasis Nilai Kristiani</p>
                     </div>
                 </div>
                 

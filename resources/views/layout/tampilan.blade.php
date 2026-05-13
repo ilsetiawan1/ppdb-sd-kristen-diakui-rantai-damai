@@ -113,9 +113,9 @@
 
             {{-- Administrasi Group --}}
             <div class="sidebar-group-title">Administrasi</div>
-            <div x-data="{ open: {{ Request::is('admin/pendaftaran*') || Request::is('admin/pembayaran*') ? 'true' : 'false' }} }">
+            <div x-data="{ open: {{ Request::is('admin/pendaftaran*') || Request::is('admin/pembayaran*') || Request::routeIs('admin.daftar_ulang.*') ? 'true' : 'false' }} }">
                 <button @click="open = !open"
-                        class="sidebar-nav-item w-full justify-between {{ Request::is('admin/pendaftaran*') || Request::is('admin/pembayaran*') ? 'active' : '' }}">
+                        class="sidebar-nav-item w-full justify-between {{ Request::is('admin/pendaftaran*') || Request::is('admin/pembayaran*') || Request::routeIs('admin.daftar_ulang.*') ? 'active' : '' }}">
                     <span class="flex items-center gap-2.5">
                         <i class="fas fa-clipboard-list w-4 text-center"></i>
                         <span>Administrasi</span>
@@ -128,6 +128,9 @@
                     </a>
                     <a href="/admin/pembayaran" class="sidebar-submenu-item {{ Request::is('admin/pembayaran') ? 'active' : '' }}">
                         <i class="fas fa-circle text-[6px]"></i> Pembayaran
+                    </a>
+                    <a href="{{ route('admin.daftar_ulang.index') }}" class="sidebar-submenu-item {{ Request::routeIs('admin.daftar_ulang.*') ? 'active' : '' }}">
+                        <i class="fas fa-circle text-[6px]"></i> Verifikasi Daftar Ulang
                     </a>
                 </div>
             </div>

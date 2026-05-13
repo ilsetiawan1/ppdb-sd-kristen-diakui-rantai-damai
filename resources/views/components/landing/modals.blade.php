@@ -280,7 +280,6 @@
 
                         <div class="hidden md:block mb-6">
                             <h3 class="text-2xl font-bold text-slate-800 font-heading">Registrasi Akun Baru</h3>
-                            <p class="text-slate-500 mt-1">Isi formulir di bawah ini untuk membuat akun PPDB.</p>
                         </div>
 
                         {{-- Alert Error Validation --}}
@@ -338,11 +337,9 @@
                                         pw: '',
                                         get strength() {
                                             if (this.pw.length === 0) return 0;
-                                            if (this.pw.length < 8) return 1;
-                                            let s = 1;
-                                            if (this.pw.length >= 8) s++;
-                                            if (this.pw.match(/[A-Z]/) && this.pw.match(/[0-9]/)) s++;
-                                            return s;
+                                            if (this.pw.length <= 10) return 1; // Lemah (1 - 10)
+                                            if (this.pw.length <= 14) return 2; // Sedang (11 - 14)
+                                            return 3; // Kuat (15 - 20+)
                                         }
                                     }">
                                         <label for="newPassword" class="block text-sm font-semibold text-slate-700 mb-1.5">Password <span class="text-red-500">*</span></label>
@@ -360,15 +357,38 @@
                                         {{-- Strength Bar --}}
                                         <div class="mt-2 space-y-1.5" x-show="pw.length > 0">
                                             <div class="flex gap-1 h-1">
-                                                <div class="flex-1 rounded-full transition-colors duration-300" :class="strength >= 1 ? (strength === 1 ? 'bg-red-500' : (strength === 2 ? 'bg-amber-500' : 'bg-green-500')) : 'bg-slate-200'"></div>
-                                                <div class="flex-1 rounded-full transition-colors duration-300" :class="strength >= 2 ? (strength === 2 ? 'bg-amber-500' : 'bg-green-500') : 'bg-slate-200'"></div>
-                                                <div class="flex-1 rounded-full transition-colors duration-300" :class="strength >= 3 ? 'bg-green-500' : 'bg-slate-200'"></div>
+                                                <div class="flex-1 rounded-full transition-colors duration-300"
+                                                    :class="strength >= 1 ? 'bg-red-500' : 'bg-slate-200'">
+                                                </div>
+
+                                                <div class="flex-1 rounded-full transition-colors duration-300"
+                                                    :class="strength >= 2 ? 'bg-amber-500' : 'bg-slate-200'">
+                                                </div>
+
+                                                <div class="flex-1 rounded-full transition-colors duration-300"
+                                                    :class="strength >= 3 ? 'bg-green-500' : 'bg-slate-200'">
+                                                </div>
                                             </div>
+
                                             <div class="flex justify-between text-xs">
-                                                <span class="text-slate-400" x-text="pw.length + ' / 8 min karakter'"></span>
+                                                <span class="text-slate-400" x-text="pw.length + ' karakter'"></span>
+
                                                 <span class="font-semibold"
-                                                    :class="{ 'text-red-500': strength===1, 'text-amber-500': strength===2, 'text-green-600': strength===3 }"
-                                                    x-text="strength===1 ? 'Lemah' : (strength===2 ? 'Sedang' : 'Kuat')"></span>
+                                                    :class="{
+                                                        'text-red-500': strength === 1,
+                                                        'text-amber-500': strength === 2,
+                                                        'text-green-600': strength === 3
+                                                    }"
+                                                    x-text="
+                                                        strength === 1 ? 'Lemah' :
+                                                        (strength === 2 ? 'Sedang' : 'Kuat')
+                                                    ">
+                                                </span>
+                                            </div>
+
+                                            {{-- Keterangan --}}
+                                            <div class="text-[11px] text-slate-400">
+                                                <span></span>
                                             </div>
                                         </div>
                                     </div>
