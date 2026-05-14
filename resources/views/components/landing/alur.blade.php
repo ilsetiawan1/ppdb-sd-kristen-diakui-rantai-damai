@@ -1,7 +1,7 @@
 <section id="pendaftaran" class="py-20 bg-slate-50 border-y border-slate-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-green-600 font-bold tracking-wide uppercase text-sm mb-2">Informasi PPDB 2025/2026</h2>
+            <h2 class="text-green-600 font-bold tracking-wide uppercase text-sm mb-2">Informasi PPDB {{ $aktivTahunAjaran->tahun_ajar ?? date('Y').'/'.(date('Y')+1) }}</h2>
             <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-800 mb-4">Syarat & Alur Pendaftaran</h3>
             <p class="text-slate-600 text-lg">Pendaftaran dilakukan secara online melalui portal ini. Simak persyaratan dan langkah-langkahnya berikut ini.</p>
         </div>
@@ -46,11 +46,24 @@
                     <div class="space-y-4">
                         <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                             <span class="text-slate-600">Pendaftaran</span>
-                            <span class="font-semibold text-slate-800">15 Jun - 30 Jul 2025</span>
+                            <span class="font-semibold text-slate-800">
+                                @if($aktivTahunAjaran)
+                                    {{ \Carbon\Carbon::parse($aktivTahunAjaran->mulai_pendaftaran)->format('d M') }} - {{ \Carbon\Carbon::parse($aktivTahunAjaran->batas_pendaftaran)->format('d M Y') }}
+                                @else
+                                    -
+                                @endif
+                            </span>
                         </div>
                         <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                             <span class="text-slate-600">Seleksi Observasi</span>
-                            <span class="font-semibold text-slate-800 text-right">26 Juli 2025<br><span class="text-xs font-normal text-slate-500">08.00-10.00 WITA</span></span>
+                            <span class="font-semibold text-slate-800 text-right">
+                                @if($aktivTahunAjaran)
+                                    {{ \Carbon\Carbon::parse($aktivTahunAjaran->tgl_seleksi)->format('d F Y') }}<br>
+                                @else
+                                    -<br>
+                                @endif
+                                <span class="text-xs font-normal text-slate-500">08.00-10.00 WITA</span>
+                            </span>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-slate-600">Pengumuman</span>

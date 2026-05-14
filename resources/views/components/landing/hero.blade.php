@@ -8,7 +8,7 @@
             <div class="text-center lg:text-left">
                 <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/90 text-sm font-medium mb-6 border border-white/20 backdrop-blur-sm">
                     <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                    PPDB Tahun Pelajaran 2025/2026 Dibuka
+                    PPDB Tahun Pelajaran {{ $aktivTahunAjaran->tahun_ajar ?? date('Y').'/'.(date('Y')+1) }} Dibuka
                 </div>
                 <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
                     Selamat Datang di PPDB <span class="text-transparent bg-clip-text bg-linear-to-r from-amber-300 to-amber-500">SD Kristen Diakui Rantai Damai</span>
