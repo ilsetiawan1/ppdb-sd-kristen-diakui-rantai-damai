@@ -55,6 +55,12 @@ Sistem ini menyediakan platform digital terpadu untuk mengelola seluruh proses p
 ### 1. Clone & Install Dependencies
 
 ```bash
+# Clone repository (Ganti <URL_REPOSITORY> dengan URL repo yang sebenarnya)
+git clone <URL_REPOSITORY>
+
+# Masuk ke direktori proyek
+cd ppdb-sd-kristen-diakui-rantai-damai
+
 # Install PHP dependencies
 composer install
 
