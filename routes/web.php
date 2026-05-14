@@ -53,6 +53,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/panitia/simpan/{id}', [PanitiaController::class, 'simpan'])->name('simpan');
         Route::delete('/panitia/hapus/{id}', [PanitiaController::class, 'hapus'])->name('hapus');
 
+        // Pengumuman Seleksi - dipindahkan ke Panitia
+        Route::get('/panitia/pengumuman-seleksi', [PengaturanController::class, 'pengseleksi'])->name('panitia.pengumuman.seleksi');
+        Route::post('/panitia/update-status-seleksi', [PengaturanController::class, 'updateStatusSeleksi'])->name('panitia.pengumuman.updateStatusSeleksi');
+
         // Laporan
         Route::prefix('laporan')->group(function () {
             Route::get('pendaftaran', [LaporanController::class, 'pendaftaran'])->name('pendaftaran');

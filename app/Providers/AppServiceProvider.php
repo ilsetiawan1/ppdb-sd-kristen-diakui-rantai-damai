@@ -2,27 +2,31 @@
 
 namespace App\Providers;
 
+use App\Models\tahunajar;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
+     * Share active Tahun Ajaran to all views globally.
      */
-    public function boot()
+    public function boot(): void
     {
-        //
+        View::composer('*', function ($view) {
+            $aktivTahunAjaran = tahunajar::where('status', 'Berlangsung')->first()
+                ?? tahunajar::where('status', 'Berakhir')->orderBy('updated_at', 'desc')->first();
+
+            $view->with('aktivTahunAjaran', $aktivTahunAjaran);
+        });
     }
 }
