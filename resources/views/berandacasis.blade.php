@@ -24,7 +24,7 @@
         <div class="relative z-10 md:w-2/3">
             <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/20 hover:bg-white/30 transition-colors rounded-full text-white/90 text-xs font-semibold tracking-wide uppercase mb-4 backdrop-blur-sm border border-white/10">
                 <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
-                PPDB {{ date('Y') }} / {{ date('Y')+1 }}
+                PPDB {{ $aktivTahunAjaran->tahun_ajar ?? date('Y').'/'.( date('Y')+1) }}
             </div>
             <h1 class="text-3xl sm:text-4xl font-bold text-white mb-3 font-heading leading-tight">
                 Halo, <span class="text-blue-200">{{ Auth::user()->name }}</span> 👋

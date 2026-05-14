@@ -170,13 +170,13 @@
 <body>
     <div class="container">
         <div class="kop-surat">
-            <h1>SD ISLAM TERPADU HIDAYAH KLATEN</h1>
-            <p style="font-size: small;">Jl. Singosari, Jetis, Belang Wetan, Kec. Klaten Utara, Kab. Klaten, Jawa Tengah, 57438</p>
+            <h1>SD KRISTEN DIAKUI RANTAI DAMAI</h1>
+            <p style="font-size: small;">Jl. Andi Pangeran, Desa Rantai Damai, Kec. Walenrang Timur, Kabupaten Luwu</p>
             <div class="line"></div>
             <h3>SURAT KETERANGAN</h3>
         </div>
         <div class="content">
-            <p>Berdasarkan kegiatan tes/seleksi yang diselenggarakan panitia penerima siswa baru tahun pelajaran <b>2024/2025</b>, maka sebagai tindak lanjut dari hasil tes tersebut kami menetapkan bahwa siswa berikut ini:</p>
+            <p>Berdasarkan kegiatan tes/seleksi yang diselenggarakan panitia penerima siswa baru tahun pelajaran <b>{{ $aktivTahunAjaran->tahun_ajar ?? date('Y') }}</b>, maka sebagai tindak lanjut dari hasil tes tersebut kami menetapkan bahwa siswa berikut ini:</p>
             <table>
                 <tr>
                     <th style="width: 350px;">NIK</th>
@@ -214,14 +214,14 @@
                 <p>Klaten, {{ date('d M Y') }}</p>
                 <p>Kepala Sekolah,</p>
                 <br>
-                <p><strong>(Nama Kepala Sekolah)</strong></p>
+                <p><strong>Serni, S.Pd.K</strong></p>
             </div>
         </div>
         @if($data->hasil_seleksi === 'Lolos')
             <div class="note">
                 <p>Catatan:</p>
                 <ul>
-                    <li>1. Daftar ulang dilaksanakan pada tanggal 17 Juni s.d 27 Juni 2024.</li>
+                    <li>1. Daftar ulang dilaksanakan pada tanggal {{ $aktivTahunAjaran ? \Carbon\Carbon::parse($aktivTahunAjaran->tgl_seleksi)->format('d F Y') : '-' }} s.d {{ $aktivTahunAjaran ? \Carbon\Carbon::parse($aktivTahunAjaran->batas_pendaftaran)->addDays(7)->format('d F Y') : '-' }}.</li>
                     <li>2. Apabila pada tanggal tersebut tidak melakukan daftar ulang, maka yang bersangkutan dianggap mengundurkan diri.</li>
                 </ul>
             </div>
