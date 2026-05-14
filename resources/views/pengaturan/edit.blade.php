@@ -1,78 +1,118 @@
 @extends('layout.tampilan')
 
+@section('page-title', 'Edit Tahun Ajaran')
+
 @section('content')
-<div class="content-wrapper">
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="card">
-                <div class="card-header bg-info text-white">
-                    <h3 class="card-title"><i class="fas fa-edit mr-2"></i><b>FORM EDIT TAHUN AJARAN</b></h3>
-                </div>
-                <div class="card-body">
-                    <form method="post" action="{{ route('tahun.update', $data->id_ajar) }}">
-                        @csrf
-                        @method('PUT')
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="tahun_ajar">Tahun Ajaran</label>
-                                    <input type="text" class="form-control" id="tahun_ajar" name="tahun_ajar" value="{{ $data->tahun_ajar }}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="mulai_pendaftaran">Tanggal Mulai Pendaftaran</label>
-                                    <input type="date" class="form-control" id="mulai_pendaftaran" name="mulai_pendaftaran" value="{{ $data->mulai_pendaftaran }}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="batas_pendaftaran">Tanggal Batas Pendaftaran</label>
-                                    <input type="date" class="form-control" id="batas_pendaftaran" name="batas_pendaftaran" value="{{ $data->batas_pendaftaran }}" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="tgl_seleksi">Tanggal Seleksi</label>
-                                    <input type="date" class="form-control" id="tgl_seleksi" name="tgl_seleksi" value="{{ $data->tgl_seleksi }}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="kuota">Kuota</label>
-                                    <input type="number" class="form-control" id="kuota" name="kuota" value="{{ $data->kuota }}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <select class="form-control" id="status" name="status" required>
-                                        <option value="Berlangsung" {{ $data->status == 'Berlangsung' ? 'selected' : '' }}>Berlangsung</option>
-                                        <option value="Berakhir" {{ $data->status == 'Berakhir' ? 'selected' : '' }}>Berakhir</option>
-                                        <option value="Belum Dimulai" {{ $data->status == 'Belum Dimulai' ? 'selected' : '' }}>Belum Dimulai</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Update</button>
-                            <a href="{{ route('beranda.tahun') }}" class="btn btn-secondary"><i class="fas fa-times mr-2"></i>Batal</a>
-                        </div>
-                    </form>
-                </div>
+<div class="p-6 max-w-4xl mx-auto">
+
+    <div class="mb-8 flex items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800">Edit Tahun Ajaran</h1>
+            <p class="text-slate-500 text-sm mt-1">Perbarui detail tahun ajaran <span class="font-semibold text-green-600">{{ $data->tahun_ajar }}</span>.</p>
+        </div>
+        <a href="{{ route('beranda.tahun') }}" class="px-5 py-2 bg-white border border-slate-300 text-slate-700 font-semibold text-sm rounded-xl hover:bg-slate-50 transition-colors shadow-sm flex items-center gap-2">
+            <i class="fas fa-arrow-left text-xs"></i> Kembali
+        </a>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                <i class="fas fa-calendar-edit"></i>
+            </div>
+            <div>
+                <h2 class="text-lg font-bold text-slate-800">Form Edit Tahun Ajaran</h2>
+                <p class="text-slate-500 text-xs">Perbarui informasi dan tekan "Simpan Perubahan".</p>
             </div>
         </div>
+
+        <form method="POST" action="{{ route('tahun.update', $data->id_ajar) }}" class="p-6">
+            @csrf
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {{-- Tahun Ajaran --}}
+                <div class="md:col-span-2">
+                    <label for="tahun_ajar" class="block text-sm font-semibold text-slate-700 mb-2">
+                        Tahun Ajaran <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="tahun_ajar" name="tahun_ajar"
+                        value="{{ $data->tahun_ajar }}"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-700 font-semibold text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all placeholder-slate-400"
+                        required>
+                    <p class="text-slate-400 text-xs mt-1">Format: YYYY/YYYY (contoh: 2025/2026)</p>
+                </div>
+
+                {{-- Mulai Pendaftaran --}}
+                <div>
+                    <label for="mulai_pendaftaran" class="block text-sm font-semibold text-slate-700 mb-2">
+                        Tanggal Mulai Pendaftaran <span class="text-red-500">*</span>
+                    </label>
+                    <input type="date" id="mulai_pendaftaran" name="mulai_pendaftaran"
+                        value="{{ $data->mulai_pendaftaran }}"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-700 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all"
+                        required>
+                </div>
+
+                {{-- Batas Pendaftaran --}}
+                <div>
+                    <label for="batas_pendaftaran" class="block text-sm font-semibold text-slate-700 mb-2">
+                        Tanggal Batas Pendaftaran <span class="text-red-500">*</span>
+                    </label>
+                    <input type="date" id="batas_pendaftaran" name="batas_pendaftaran"
+                        value="{{ $data->batas_pendaftaran }}"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-700 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all"
+                        required>
+                </div>
+
+                {{-- Tanggal Seleksi --}}
+                <div>
+                    <label for="tgl_seleksi" class="block text-sm font-semibold text-slate-700 mb-2">
+                        Tanggal Seleksi <span class="text-red-500">*</span>
+                    </label>
+                    <input type="date" id="tgl_seleksi" name="tgl_seleksi"
+                        value="{{ $data->tgl_seleksi }}"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-700 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all"
+                        required>
+                </div>
+
+                {{-- Kuota --}}
+                <div>
+                    <label for="kuota" class="block text-sm font-semibold text-slate-700 mb-2">
+                        Kuota Penerimaan <span class="text-red-500">*</span>
+                    </label>
+                    <input type="number" id="kuota" name="kuota" min="1"
+                        value="{{ $data->kuota }}"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-700 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all"
+                        required>
+                </div>
+
+                {{-- Status --}}
+                <div class="md:col-span-2">
+                    <label for="status" class="block text-sm font-semibold text-slate-700 mb-2">
+                        Status Tahun Ajaran <span class="text-red-500">*</span>
+                    </label>
+                    <select id="status" name="status"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-700 font-medium focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all"
+                        required>
+                        <option value="Belum Dimulai" {{ $data->status == 'Belum Dimulai' ? 'selected' : '' }}>📅 Belum Dimulai</option>
+                        <option value="Berlangsung" {{ $data->status == 'Berlangsung' ? 'selected' : '' }}>🟢 Berlangsung (Aktif)</option>
+                        <option value="Berakhir" {{ $data->status == 'Berakhir' ? 'selected' : '' }}>✅ Berakhir</option>
+                    </select>
+                    <p class="text-slate-400 text-xs mt-1">Hanya satu tahun ajaran yang boleh berstatus <strong>"Berlangsung"</strong> pada satu waktu.</p>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-slate-100 flex gap-3">
+                <button type="submit"
+                    class="px-8 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl transition-all shadow-md shadow-amber-500/20 hover:-translate-y-0.5 flex items-center gap-2">
+                    <i class="fas fa-save"></i> Simpan Perubahan
+                </button>
+                <a href="{{ route('beranda.tahun') }}"
+                    class="px-6 py-3 bg-white border border-slate-300 text-slate-700 font-semibold rounded-xl hover:bg-slate-50 transition-colors">
+                    Batal
+                </a>
+            </div>
+        </form>
     </div>
 </div>
 @endsection
-
-@push('styles')
-<style>
-    .card {
-        border: none;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    }
-    .card-header {
-        border-radius: 10px 10px 0 0;
-    }
-    .form-control, .form-select {
-        border-radius: 5px;
-    }
-    .btn {
-        border-radius: 5px;
-    }
-</style>
-@endpush

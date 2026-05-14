@@ -131,18 +131,15 @@ class PengaturanController extends Controller
     {
         $search = $request->input('search');
 
-        // Cari tahun ajar yang sedang berlangsung
         $tahunAjarBerlangsung = DB::table('tahun_ajar')
             ->where('status', 'Berlangsung')
             ->first();
 
-        // Jika tidak ada yang berlangsung, cari yang berakhir terbaru
         if (!$tahunAjarBerlangsung) {
             $tahunAjarBerakhir = DB::table('tahun_ajar')
                 ->where('status', 'Berakhir')
                 ->orderBy('updated_at', 'desc')
                 ->first();
-
             $tahunAjarId = $tahunAjarBerakhir ? $tahunAjarBerakhir->id_ajar : null;
         } else {
             $tahunAjarId = $tahunAjarBerlangsung->id_ajar;
@@ -156,19 +153,25 @@ class PengaturanController extends Controller
             ->where('tb_pendaftaran.ajar_id', '=', $tahunAjarId)
             ->where('tb_casis.nama', 'LIKE', '%' . $search . '%')
             ->select(
-                    'tb_casis.id_casis',
-                    'tb_casis.nama',
-                    'tb_seleksi.id_seleksi',
-                    'tb_seleksi.nilai_baca',
-                    'tb_seleksi.nilai_tulis',
-                    'tb_seleksi.nilai_hitung',
-                    'tb_seleksi.nilai_wawancara',
-                    'tb_seleksi.total_nilai',
-                    'tb_seleksi.nilai_akhir',
-                    'tb_seleksi.hasil_seleksi',
-                    'tb_seleksi.status as status_seleksi'
-                )
+                'tb_casis.id_casis',
+                'tb_casis.nama',
+                'tb_seleksi.id_seleksi',
+                'tb_seleksi.nilai_baca',
+                'tb_seleksi.nilai_tulis',
+                'tb_seleksi.nilai_hitung',
+                'tb_seleksi.nilai_wawancara',
+                'tb_seleksi.total_nilai',
+                'tb_seleksi.nilai_akhir',
+                'tb_seleksi.hasil_seleksi',
+                'tb_seleksi.status as status_seleksi'
+            )
             ->get();
+
+        // Arahkan ke view Panitia jika role adalah Panitia
+        $user = auth()->user();
+        if ($user && $user->role === 'Panitia') {
+            return view('panitia.pengumuman_seleksi', compact('data'));
+        }
 
         return view('pengaturan.pengumuman', compact('data'));
     }
@@ -177,23 +180,32 @@ class PengaturanController extends Controller
     {
         $seleksiIds = $request->input('seleksi_ids', []);
 
+        // Update yang dicentang → Berhasil
         if (!empty($seleksiIds)) {
-            $casisList = DB::table('tb_seleksi')
-                ->join('tb_casis', 'tb_seleksi.casis_id', '=', 'tb_casis.id_casis')
-                ->whereIn('tb_seleksi.id_seleksi', $seleksiIds)
-                ->select('tb_casis.*', 'tb_seleksi.hasil_seleksi')
-                ->get();
+            DB::table('tb_seleksi')
+                ->whereIn('id_seleksi', $seleksiIds)
+                ->update(['status' => 'Berhasil']);
 
-            foreach ($casisList as $casis) {
-                // Update status seleksi
-                DB::table('tb_seleksi')
-                    ->where('casis_id', $casis->id_casis)
-                    ->update(['status' => 'Berhasil']);
-            }
-
-            return redirect()->back()->with('success', 'Status pengumuman berhasil diperbarui');
+            // Reset yang TIDAK dicentang → Pending
+            DB::table('tb_seleksi')
+                ->whereNotIn('id_seleksi', $seleksiIds)
+                ->where('status', 'Berhasil')
+                ->update(['status' => 'Pending']);
         } else {
-            return redirect()->back()->with('error', 'Tidak ada calon siswa yang dipilih');
+            // Tidak ada yang dicentang → reset semua ke Pending
+            DB::table('tb_seleksi')
+                ->where('status', 'Berhasil')
+                ->update(['status' => 'Pending']);
         }
+
+        $successMsg = 'Status pengumuman seleksi berhasil diperbarui.';
+
+        // Redirect berdasarkan role
+        $user = auth()->user();
+        if ($user && $user->role === 'Panitia') {
+            return redirect()->route('panitia.pengumuman.seleksi')->with('success', $successMsg);
+        }
+
+        return redirect()->route('pengumuman.pengseleksi')->with('success', $successMsg);
     }
 }

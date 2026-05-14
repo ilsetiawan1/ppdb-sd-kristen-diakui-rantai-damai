@@ -10,7 +10,7 @@ class tahunajar extends Model
     use HasFactory;
 
     protected $table = 'tahun_ajar';
-    protected $fillable = ['id_ajar', 'tahun_ajar','status','mulai_pendaftaran','batas_pendaftaran','tgl_seleksi'];
+    protected $fillable = ['id_ajar', 'tahun_ajar', 'status', 'mulai_pendaftaran', 'batas_pendaftaran', 'tgl_seleksi', 'kuota'];
     protected $primaryKey = 'id_ajar';
 
     public function pendaftaran()
