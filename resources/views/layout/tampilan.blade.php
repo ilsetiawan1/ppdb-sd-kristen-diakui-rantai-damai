@@ -105,9 +105,7 @@
                     <a href="/admin/data/landing-page" class="sidebar-submenu-item {{ Request::is('admin/data/landing-page') ? 'active' : '' }}">
                         <i class="fas fa-circle text-[6px]"></i> Landing Page (Hero)
                     </a>
-                    <a href="/admin/data/pengumuman-seleksi" class="sidebar-submenu-item {{ Request::is('admin/data/pengumuman-seleksi') ? 'active' : '' }}">
-                        <i class="fas fa-circle text-[6px]"></i> Pengumuman Seleksi
-                    </a>
+
                 </div>
             </div>
 
@@ -170,7 +168,7 @@
 
         {{-- Sidebar Footer --}}
         <div class="px-3 py-2.5 border-t border-white/10">
-            <p class="text-green-400/60 text-xs text-center">PPDB SD Kristen © {{ date('Y') }}</p>
+            <p class="text-green-400/60 text-xs text-center">TA {{ $aktivTahunAjaran->tahun_ajar ?? date('Y') }}</p>
         </div>
     </aside>
 
@@ -198,7 +196,7 @@
             <div class="flex items-center gap-2">
                 <span class="hidden sm:flex items-center gap-1.5 text-sm text-slate-600">
                     <i class="fas fa-calendar-alt text-green-600 text-xs"></i>
-                    {{ \Carbon\Carbon::now('Asia/Jakarta')->isoFormat('dddd, D MMMM Y') }}
+                    TA {{ $aktivTahunAjaran->tahun_ajar ?? '-' }}
                 </span>
                 <div class="w-px h-5 bg-slate-200 hidden sm:block"></div>
                 <a href="/logout" class="flex items-center gap-1.5 text-sm text-slate-600 hover:text-red-600 transition-colors px-2 py-1 rounded-lg hover:bg-red-50">
