@@ -122,7 +122,7 @@
     <div class="header">
         <img src="{{ asset('images/logo-sd-kristen-diakui-rantai-damai.png') }}" alt="Logo Sekolah" class="logo">
 
-        <h1 class="school-name">SD ISLAM TERPADU HIDAYAH KLATEN</h1>
+        <h1 class="school-name">SD KRISTEN DIAKUI RANTAI DAMAI</h1>
         <p class="school-address">Jl. Singosari, Jetis, Belang Wetan, Kec. Klaten Utara, Kab. Klaten, Jawa Tengah, 57438</p>
     </div>
 

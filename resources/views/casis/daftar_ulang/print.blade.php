@@ -169,8 +169,8 @@
     <div class="container">
         <div class="header">
             <img src="{{ asset('images/logo-sd-kristen-diakui-rantai-damai.png') }}" alt="Logo Sekolah" class="logo">
-            <h1 class="school-name">SD ISLAM TERPADU HIDAYAH KLATEN</h1>
-            <p class="school-address">Jl. Singosari, Jetis, Belang Wetan, Kec. Klaten Utara, Kab. Klaten, Jawa Tengah, 57438</p>
+            <h1 class="school-name">SD KRISTEN DIAKUI RANTAI DAMAI</h1>
+            <p class="school-address">Jl. Andi Pangeran, Desa Rantai Damai, Kec. Walenrang Timur, Kabupaten Luwu.</p>
         </div>
 
         <h2 class="document-title">Bukti Pembayaran dan Daftar Ulang</h2>
@@ -213,7 +213,7 @@
             </table>
 
             <div class="announcement">
-                Pembayaran Daftar Ulang telah diterima. Terima kasih atas partisipasi Anda dalam proses penerimaan siswa baru di SD Islam Terpadu Hidayah Klaten.
+                Pembayaran Daftar Ulang telah diterima. Terima kasih atas partisipasi Anda dalam proses penerimaan siswa baru di SD Kristen Diakui Rantai Damai.
             </div>
 
             @if($daftarUlang->metode_pembayaran == 'Cicilan')
@@ -227,7 +227,7 @@
                     <li>Pembayaran dapat dilakukan melalui offline atau transfer ke rekening sekolah:
                         <br>Bank BNI
                         <br>No. Rekening: 1234567890
-                        <br>Atas Nama: SD Islam Terpadu Hidayah Klaten
+                        <br>Atas Nama: SD Kristen Diakui Rantai Damai
                     </li>
                 </ul>
                 <p>Harap simpan bukti pembayaran setiap cicilan dan laporkan ke bagian administrasi sekolah.</p>

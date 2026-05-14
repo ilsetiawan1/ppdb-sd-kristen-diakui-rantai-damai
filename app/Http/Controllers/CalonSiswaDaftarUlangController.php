@@ -47,7 +47,6 @@ class CalonSiswaDaftarUlangController extends Controller
                 $query->where('jenis_kelamin', $casis->jenis_kelamin)
                     ->orWhere('jenis_kelamin', 'Semua');
             })
-            ->where('is_active', 1)
             ->get();
 
         $totalBiaya = $biayaComponents->sum('nominal');
@@ -84,7 +83,6 @@ class CalonSiswaDaftarUlangController extends Controller
                     $query->where('jenis_kelamin', $casis->jenis_kelamin)
                         ->orWhere('jenis_kelamin', 'Semua');
                 })
-                ->where('is_active', 1)
                 ->sum('nominal');
 
             // Hapus titik dari jumlah_bayar

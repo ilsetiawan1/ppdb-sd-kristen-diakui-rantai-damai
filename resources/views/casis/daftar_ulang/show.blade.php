@@ -121,14 +121,14 @@
 
                 {{-- Informasi Transfer --}}
                 <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl shadow-md text-white p-6 relative overflow-hidden">
-                    <i class="fas fa-university absolute -right-4 -bottom-4 text-white/10 text-8xl"></i>
+                    <i class="fas fa-university absolute -right-4 -bottom-4 text-white/10 text-6xl"></i>
                     <h3 class="text-lg font-bold mb-4 relative z-10 flex items-center gap-2"><i class="fas fa-university"></i> Rekening Pembayaran</h3>
                     <div class="space-y-2 relative z-10">
                         <p class="text-blue-100 text-sm">Silakan transfer pembayaran ke rekening berikut:</p>
                         <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20 mt-3">
                             <p class="font-bold text-lg mb-1">Bank BNI</p>
                             <p class="text-xl font-mono tracking-wider mb-1">1234 5678 90</p>
-                            <p class="text-sm text-blue-100">A.N. SD Kristen Diakui Rantai Damai</p>
+                            <p class="text-sm text-blue-100 leading-tight">A.N. SD Kristen Diakui Rantai Damai</p>
                         </div>
                     </div>
                 </div>
@@ -248,7 +248,7 @@
                 const totalBiaya = parseInt(totalBiayaRaw.textContent);
                 const paymentError = document.getElementById('paymentError');
 
-                new Cleave('#jumlah_bayar', {
+                const cleaveInstance = new Cleave('#jumlah_bayar', {
                     numeral: true,
                     numeralThousandsGroupStyle: 'thousand',
                     numeralDecimalMark: ',',
@@ -271,9 +271,9 @@
                 $('input[name="metode_pembayaran"]').on('change', function() {
                     const method = $(this).val();
                     if (method === 'DP 50%') {
-                        jumlahBayar.value = (totalBiaya * 0.5).toLocaleString('id-ID').replace(/,/g, '.');
+                        cleaveInstance.setRawValue(totalBiaya * 0.5);
                     } else if (method === 'Lunas') {
-                        jumlahBayar.value = totalBiaya.toLocaleString('id-ID').replace(/,/g, '.');
+                        cleaveInstance.setRawValue(totalBiaya);
                     }
                     updateValidation();
                 });
