@@ -60,7 +60,7 @@
 <body>
     <!-- Tambahkan jeda di atas judul -->
     <br><br>
-    <div class="center title">SD ISLAM TERPADU HIDAYAH KLATEN</div>
+    <div class="center title">SD KRISTEN DIAKUI RANTAI DAMAI</div>
     <!-- Menghapus teks "bold" pada teks berikut -->
     <div class="center jalan">Jl. Singosari, Jetis, Belang Wetan, Kec. Klaten Utara, Kab. Klaten, Jawa Tengah, 57438</div>
     <!-- Tambahkan garis panjang -->
