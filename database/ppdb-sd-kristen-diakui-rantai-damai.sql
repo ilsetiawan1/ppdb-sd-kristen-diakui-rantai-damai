@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 12, 2026 at 10:27 AM
+-- Generation Time: May 14, 2026 at 03:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,7 +46,13 @@ INSERT INTO `biaya_daftar_ulang` (`id`, `nama_biaya`, `nominal`, `tahun_ajaran`,
 (1, 'Infaq pengembangan', 6000000, '2024/2025', 'Semua', 1, '2024-08-14 09:37:39', '2024-08-14 09:37:39'),
 (2, 'Seragam Putra', 705000, '2024/2025', 'Laki-Laki', 1, '2024-08-14 09:38:21', '2024-08-14 09:38:21'),
 (3, 'Seragam Putri (Termasuk Kerudung)', 830000, '2024/2025', 'Perempuan', 1, '2024-08-14 09:38:47', '2024-08-14 09:39:35'),
-(5, 'Buku Paket', 1500000, '2024/2025', 'Semua', 1, '2024-08-14 09:40:35', '2024-08-14 09:41:52');
+(5, 'Buku Paket', 1500000, '2024/2025', 'Semua', 1, '2024-08-14 09:40:35', '2024-08-14 09:41:52'),
+(6, 'Uang Pangkal / Gedung', 3500000, '2025/2026', 'Semua', 1, '2026-05-14 03:09:49', '2026-05-14 03:09:49'),
+(7, 'Seragam Olahraga', 200000, '2025/2026', 'Semua', 1, '2026-05-14 03:10:20', '2026-05-14 03:10:20'),
+(8, 'Seragam Batik Sekolah', 150000, '2025/2026', 'Semua', 1, '2026-05-14 03:10:40', '2026-05-14 03:10:40'),
+(9, 'Atribut (Topi, Dasi, Badge)', 75000, '2025/2026', 'Semua', 1, '2026-05-14 03:11:09', '2026-05-14 03:11:09'),
+(10, 'Uang Kegiatan Tahunan', 600000, '2025/2026', 'Semua', 1, '2026-05-14 03:11:39', '2026-05-14 03:11:39'),
+(11, 'Paket Buku Paket & Modu', 850000, '2025/2026', 'Semua', 1, '2026-05-14 03:11:56', '2026-05-14 03:11:56');
 
 -- --------------------------------------------------------
 
@@ -123,8 +129,8 @@ CREATE TABLE `tahun_ajar` (
 --
 
 INSERT INTO `tahun_ajar` (`id_ajar`, `tahun_ajar`, `mulai_pendaftaran`, `batas_pendaftaran`, `tgl_seleksi`, `status`, `kuota`, `created_at`, `updated_at`) VALUES
-(1, '2024/2025', '2024-06-15', '2024-07-30', '2024-07-26', 'Berlangsung', 96, '2024-08-14 10:29:15', '2024-08-14 18:48:22'),
-(2, '2025/2026', '2025-06-15', '2025-06-30', '2025-07-26', 'Belum Dimulai', 96, '2024-08-14 10:29:17', '2024-08-14 16:47:33'),
+(1, '2024/2025', '2024-06-15', '2024-07-30', '2024-07-26', 'Berakhir', 96, '2024-08-14 10:29:15', '2026-05-14 01:22:04'),
+(2, '2025/2026', '2026-05-13', '2026-09-13', '2026-10-01', 'Berlangsung', 96, '2024-08-14 10:29:17', '2026-05-14 01:26:19'),
 (3, '2026/2027', '2026-06-16', '2026-06-06', '2026-07-26', 'Belum Dimulai', 96, '2024-08-14 10:29:20', '2024-08-14 16:47:44');
 
 -- --------------------------------------------------------
@@ -160,7 +166,10 @@ CREATE TABLE `tb_casis` (
 --
 
 INSERT INTO `tb_casis` (`id_casis`, `user_id`, `nama`, `email`, `nik`, `tempat_lahir`, `tanggal_lahir`, `alamat`, `jenis_kelamin`, `jml_saudara`, `nama_ortu`, `tempat_lahir_ortu`, `tanggal_lahir_ortu`, `no_hp`, `pendidikan_ortu`, `pekerjaan_ortu`, `gaji_ortu`, `created_at`, `updated_at`) VALUES
-(24, 38, 'Rizal Wahyudi', NULL, '1234567899', 'Klaten', '2008-07-17', 'Jl. Murhum', 'Laki-Laki', 2, 'yongssss', 'Yogjakarta', '1991-07-17', '082388291019', 'S1', 'Dosen', 300000, '2024-08-14 11:06:15', '16:55:13');
+(24, 38, 'Rizal Wahyudi', NULL, '1234567899', 'Klaten', '2008-07-17', 'Jl. Murhum', 'Laki-Laki', 2, 'yongssss', 'Yogjakarta', '1991-07-17', '082388291019', 'S1', 'Dosen', 300000, '2024-08-14 11:06:15', '16:55:13'),
+(31, 55, 'Salembe', NULL, '1231312312312312', 'Ambon', '2021-12-15', 'Jl. Putuhena', 'Laki-Laki', 1, 'Muhammad Ilham Setiawan', 'Ambon', '2004-01-22', '081231313121', 'S2', 'CEO TESLA', 1000000000, '2026-05-12 01:28:57', '08:28:57'),
+(32, 56, 'Parjek Sal Pedro', NULL, '1231231231321266', 'Argentina', '2021-05-03', 'Desa Rantai Damai, Kec. Walenrang Timur, Kab. Luwu', 'Laki-Laki', 2, 'Rizky medan', 'Medan', '2002-10-15', '082131312312', 'S2', 'CEO BACHOCHO', 12000000, '2026-05-13 10:51:46', '17:51:46'),
+(33, 57, 'Gibran', NULL, '2313453221574577', 'Swiss', '2021-01-11', 'Solo, dekat Indomart Solowingsi', 'Laki-Laki', 3, 'Jokowi', 'Solo', '1977-06-07', '082312314556', 'S2', 'Kasir Indomart', 200000000, '2026-05-14 02:17:11', '09:17:11');
 
 -- --------------------------------------------------------
 
@@ -237,7 +246,10 @@ CREATE TABLE `tb_pembayaran` (
 --
 
 INSERT INTO `tb_pembayaran` (`id_pembayaran`, `casis_id`, `tgl_pembayaran`, `jumlah_pembayaran`, `status_pembayaran`, `bukti_pembayaran`, `created_at`, `updated_at`) VALUES
-(28, 24, '2024-07-30', 100000, 'Lunas', '1722314075_1720201228_.jpeg', '2024-07-30 05:13:01', '05:13:01');
+(28, 24, '2024-07-30', 100000, 'Lunas', '1722314075_1720201228_.jpeg', '2024-07-30 05:13:01', '05:13:01'),
+(30, 31, '2026-05-12', 100000, 'Lunas', '1778576436_foto-linked-3-removebg-preview (1).png', '2026-05-12 09:19:09', '09:19:09'),
+(33, 32, '2026-05-13', 100000, 'Lunas', '1778707222_profile-avatar.jpg', '2026-05-13 21:20:50', '21:20:50'),
+(34, 33, '2026-05-14', 100000, 'Lunas', '1778750273_antre-ktp.jpg', '2026-05-14 09:17:59', '09:17:59');
 
 -- --------------------------------------------------------
 
@@ -264,7 +276,10 @@ CREATE TABLE `tb_pendaftaran` (
 --
 
 INSERT INTO `tb_pendaftaran` (`id_pendaftaran`, `casis_id`, `ajar_id`, `tgl_pendaftaran`, `status`, `akte`, `kk`, `foto`, `created_at`, `updated_at`, `status_daftar_ulang`) VALUES
-(30, 24, 1, '2024-07-30', 'Berhasil', 'akte_1722313679.jpg', 'kk_1722313647.jpg', 'foto_1722313663.png', '2024-08-14 18:53:34', '17:55:51', 'Belum');
+(30, 24, 1, '2024-07-30', 'Berhasil', 'akte_1722313679.jpg', 'kk_1722313647.jpg', 'foto_1722313663.png', '2024-08-14 18:53:34', '17:55:51', 'Belum'),
+(37, 31, 1, '2026-05-12', 'Berhasil', 'akte_1778574537.png', 'kk_1778574566.png', 'foto_1778574566.png', '2026-05-12 09:01:28', '09:01:28', 'Belum'),
+(38, 32, 1, '2026-05-13', 'Berhasil', 'akte_1778694706.jpg', 'kk_1778694706.jpg', 'foto_1778694706.jpg', '2026-05-13 21:19:59', '21:19:59', 'Belum'),
+(39, 33, 2, '2026-05-14', 'Berhasil', 'akte_1778750231.jpg', 'kk_1778750232.jpg', 'foto_1778750232.jpg', '2026-05-14 09:17:45', '09:17:45', 'Belum');
 
 -- --------------------------------------------------------
 
@@ -280,7 +295,6 @@ CREATE TABLE `tb_seleksi` (
   `nilai_baca` int(11) DEFAULT NULL,
   `nilai_tulis` int(11) DEFAULT NULL,
   `nilai_hitung` int(11) DEFAULT NULL,
-  `nilai_ngaji` int(11) DEFAULT NULL,
   `nilai_wawancara` int(11) DEFAULT NULL,
   `total_nilai` int(11) DEFAULT NULL,
   `nilai_akhir` int(11) DEFAULT NULL,
@@ -294,8 +308,11 @@ CREATE TABLE `tb_seleksi` (
 -- Dumping data for table `tb_seleksi`
 --
 
-INSERT INTO `tb_seleksi` (`id_seleksi`, `pendaftaran_id`, `casis_id`, `tgl_seleksi`, `nilai_baca`, `nilai_tulis`, `nilai_hitung`, `nilai_ngaji`, `nilai_wawancara`, `total_nilai`, `nilai_akhir`, `hasil_seleksi`, `status`, `created_at`, `updated_at`) VALUES
-(9, 30, 24, '2024-07-18', 70, 87, 70, 77, 70, 374, 75, 'Lolos', 'Berhasil', '2024-07-21 13:46:38', '13:46:38');
+INSERT INTO `tb_seleksi` (`id_seleksi`, `pendaftaran_id`, `casis_id`, `tgl_seleksi`, `nilai_baca`, `nilai_tulis`, `nilai_hitung`, `nilai_wawancara`, `total_nilai`, `nilai_akhir`, `hasil_seleksi`, `status`, `created_at`, `updated_at`) VALUES
+(9, 30, 24, '2024-07-18', 70, 87, 70, 70, 374, 75, 'Lolos', 'Pending', '2026-05-14 09:18:41', '13:46:38'),
+(11, 37, 31, '2026-05-12', 70, 100, 100, 70, 420, 84, 'Lolos', NULL, '2026-05-12 10:08:45', '10:08:45'),
+(12, 38, 32, '2026-05-13', 100, 100, 100, 100, 400, 100, 'Lolos', 'Pending', '2026-05-14 09:18:41', '21:21:32'),
+(13, 39, 33, '2026-05-14', 88, 88, 88, 88, 352, 88, 'Lolos', 'Berhasil', '2026-05-14 09:18:41', '09:18:25');
 
 -- --------------------------------------------------------
 
@@ -330,7 +347,9 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `ro
 (52, 'Admin 1', 'admin1@gmail.com', NULL, '$2y$10$8daz1vhGRgUm9j3JDrplceC50JgnkgETREoeNHZvSWTzVDP9YKJn2', 'Admin', NULL, '2026-05-11 20:15:21', '2026-05-11 14:11:50'),
 (53, 'Panitia 1', 'panitia1@gmail.com', NULL, '$2y$10$KwG31vKvOQbq5iipbsel8u2O4qJrlrptMT.i35Fef2Vfuicah6F9u', 'Panitia', NULL, '2026-05-11 20:15:21', '2026-05-11 14:12:26'),
 (54, 'panitia 2', 'panitia2@gmail.com', NULL, '$2y$10$rFUtH//.EYTpmLOPuuoZUu7u8VazUxjyKxaazOpkiAe98xptJwaRG', 'Panitia', NULL, '2026-05-11 14:19:25', '2026-05-11 14:19:25'),
-(55, 'Muhammad Ilham Setiawan', 'm.ilsetiawan1@gmail.com', NULL, '$2y$10$AtHEasf1UcUIX/pQpdVfgOwECOjoa14fIUVnYY5JEztskYoWjDhV.', 'Calon Siswa', NULL, '2026-05-12 00:56:56', '2026-05-12 00:56:56');
+(55, 'Muhammad Ilham Setiawan', 'm.ilsetiawan1@gmail.com', NULL, '$2y$10$AtHEasf1UcUIX/pQpdVfgOwECOjoa14fIUVnYY5JEztskYoWjDhV.', 'Calon Siswa', NULL, '2026-05-12 00:56:56', '2026-05-12 00:56:56'),
+(56, 'Rizky medan', 'rizky@gmail.com', NULL, '$2y$10$H7z54jJnWOemkrGhQA6zCOvoXTMBKSqUC49Xh0EvxtG9bxVmMwWqu', 'Calon Siswa', NULL, '2026-05-13 09:37:54', '2026-05-13 09:37:54'),
+(57, 'Casis 2', 'casis2@gmail.com', NULL, '$2y$10$TVfA7.M1.LLeePPbRmny3em4KL8izEuoz1FdA9OrZbeHg3k/FPB5i', 'Calon Siswa', NULL, '2026-05-14 02:13:13', '2026-05-14 02:13:13');
 
 --
 -- Indexes for dumped tables
@@ -420,7 +439,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `biaya_daftar_ulang`
 --
 ALTER TABLE `biaya_daftar_ulang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `foto`
@@ -444,7 +463,7 @@ ALTER TABLE `tahun_ajar`
 -- AUTO_INCREMENT for table `tb_casis`
 --
 ALTER TABLE `tb_casis`
-  MODIFY `id_casis` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_casis` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `tb_daftar_ulang`
@@ -462,25 +481,25 @@ ALTER TABLE `tb_panitia`
 -- AUTO_INCREMENT for table `tb_pembayaran`
 --
 ALTER TABLE `tb_pembayaran`
-  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `tb_pendaftaran`
 --
 ALTER TABLE `tb_pendaftaran`
-  MODIFY `id_pendaftaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id_pendaftaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `tb_seleksi`
 --
 ALTER TABLE `tb_seleksi`
-  MODIFY `id_seleksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_seleksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- Constraints for dumped tables
